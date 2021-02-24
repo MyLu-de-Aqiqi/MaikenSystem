@@ -21,45 +21,76 @@
 
 
 /* 菜单集合 */
+// 判断是否有那个东西，如果没有，就弹出登陆界面
+
+
 export default [
 	{
-		id: '2',
-		name: '各种示例',
+		id: '1',
+		name: '进货管理模块',
 		icon: 'el-icon-search',
-		info: '增删改查各种常用组件示例',
+		info: '进货管理模块',
 		childList: [
-			{id: '2-1', name: '查询参数示例', view: () => import('@/sa-view/case/query-p-case.vue')},
-			{id: '2-2', name: '表格显示示例', view: () => import('@/sa-view/case/query-table-case.vue')},
-			{id: '2-3', name: '表单提交示例', view: () => import('@/sa-view/case/submit-form.vue')}
+			{id: '2', name: '进货管理', view: () => import('@/sa-view/purchase/purchase-list.vue')},
+			{id: '12', name: '库存管理', view: () => import('@/sa-view/stock/stock-list.vue')}
+		]
+	},
+	{
+		id: '25',
+		name: '财务管理',
+		icon: 'el-icon-search',
+		info: '财务管理',
+		childList: [
+			{id: '26', name: '账目管理', view: () => import('@/sa-view/financial/financial-list.vue')}
 		]
 	},
 	{
 		id: '3',
-		name: '首页设置',
-		icon: 'el-icon-table-lamp',
-		info: '首页的一些设置',
+		name: '销售订单管理',
+		icon: 'el-icon-search',
+		info: '销售订单管理',
 		childList: [
-			{id: '3-2', name: '轮播图设置', view: () => import('@/sa-view/home/swiper-list.vue')}
+			{id: '4', name: '销售订单查看', view: () => import('@/sa-view/saleorder/sale-order-list.vue')}
 		]
 	},
+	// {
+	// 	id: '13',
+	// 	name: '各种示例',
+	// 	icon: 'el-icon-search',
+	// 	info: '增删改查各种常用组件示例',
+	// 	childList: [
+	// 		{id: '14', name: '查询参数示例', view: () => import('@/sa-view/case/query-p-case.vue')},
+	// 		{id: '15', name: '表格显示示例', view: () => import('@/sa-view/case/query-table-case.vue')},
+	// 		{id: '16', name: '表单提交示例', view: () => import('@/sa-view/case/submit-form.vue')}
+	// 	]
+	// },
+	// {
+	// 	id: '17',
+	// 	name: '首页设置',
+	// 	icon: 'el-icon-table-lamp',
+	// 	info: '首页的一些设置',
+	// 	childList: [
+	// 		{id: '18', name: '轮播图设置', view: () => import('@/sa-view/home/swiper-list.vue')}
+	// 	]
+	// },
 	{
-		id: '4',
+		id: '19',
 		name: '权限控制',
 		icon: 'el-icon-unlock',
 		info: '对系统角色权限的分配等设计，敏感度较高，请谨慎授权',
 		childList: [
-			{id: '4-1', name: '角色列表', view: () => import('@/sa-view/role/role-list.vue') },
-			{id: '4-2', name: '菜单预览', view: () => import('@/sa-view/role/menu-list.vue') }
+			{id: '20', name: '角色列表', view: () => import('@/sa-view/role/role-list.vue') },
+			{id: '21', name: '菜单预览', view: () => import('@/sa-view/role/menu-list.vue') }
 		]
 	},
 	{
-		id: '5',
+		id: '22',
 		name: '用户管理',
 		icon: 'el-icon-user',
 		info: '对用户列表、添加、统计等等...',
 		childList: [
-			{id: '5-2', name: '用户列表', view: () => import('@/sa-view/user/user-list.vue')  },
-			{id: '5-1', name: '用户添加', view: () => import('@/sa-view/user/user-add.vue'), params: {username: '王铁汉'} },
+			{id: '23', name: '用户列表', view: () => import('@/sa-view/user/user-list.vue')  },
+			{id: '24', name: '用户添加', view: () => import('@/sa-view/user/user-add.vue'), params: {username: '王铁汉'} },
 		],
 		
 		// let template = '<div class="iframe-view-box"><iframe class="iframe-view" src="' + menu.url + '"></iframe></div>';

@@ -140,7 +140,7 @@ export default {
 			window.onresize();		// 手动触发一下窗口变动监听
 		},
 		// ------------------- 对外预留接口 --------------------
-		// show_list 为指定显示的id集合(注意是id的集合)，为空时代表显示所有	
+		// show_list 为指定显示的id集合(注意是id的集合)，为空时代表显示所有
 		initMenu: function(show_list) {
 			this.setMenuList(saMenuList, show_list);
 		},

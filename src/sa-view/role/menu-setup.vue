@@ -48,8 +48,8 @@
 </template>
 
 <script>
-	import menuList from './../../sa-resources/sa-menu-list.js';
-	import sa_admin_code_util from './../../sa-resources/index/admin-util.js';	// admin代码util
+	// import menuList from './../../sa-resources/sa-menu-list.js';
+	// import sa_admin_code_util from './../../sa-resources/index/admin-util.js';	// admin代码util
 	export default {
 		data() {
 			return {
@@ -68,12 +68,13 @@
 				this.title = '为[' + role_name + ']分配权限';
 				
 				// 加载 
-				this.sa.ajax2('/SysMenu/getList?role_id=' + role_id, function(){
-					let menuList2 = menuList;
-					menuList2 = sa_admin_code_util.arrayToTree(menuList2);	// 一维转tree 
-					menuList2 = sa_admin_code_util.refMenuList(menuList2);	// 属性处理 
-					this.dataList = menuList2;	// 数据  
-					this.select_list = ['11','1', '1-1', '1-2', '1-3', '1-3-1', '2', '2-1', '3', '3-1', '3-2'];	// 选中的列表 
+				this.sa.ajaxGet('/role/getMenuTree?roleId=' + role_id, function(res){
+
+					console.log("menuList2:"+JSON.stringify(res.data.allMenu))
+					//所有
+					this.dataList = res.data.allMenu;	// 数据
+					//该角色选中的列表list
+					this.select_list = res.data.checkMenu;	// 选中的列表
 				}.bind(this));
 			},
 			// 关闭
@@ -84,14 +85,18 @@
 			ok: function(){
 				var str = '';
 				this.$refs.tree.getCheckedKeys().forEach(function(ts){
-					str += '&ids=' + ts;
+					str += ',' + ts;
 				})
-				var url = '/MRM/updateRoleMenu?role_id=' + this.role_id + str;
-				this.sa.ajax2(url,{},function () {
-					this.sa.alert('成功', function(){
-						this.isShow = false;
-					}.bind(this));
-				}.bind(this))
+				// var url = '/MRM/updateRoleMenu?role_id=' + this.role_id + str;
+
+				this.sa.ajaxGet('/role/updateMenu?roleId=' + this.role_id +'&ids='+ str, function(res){
+					console.log(res)
+					if (res.code == 200){
+						this.sa.alert('成功', function(){
+							this.isShow = false;
+						}.bind(this));
+					}
+				}.bind(this));
 			},
 			// 点击回调, 处理其子节点跟随父节点的选中
 			node_click: function(node) {

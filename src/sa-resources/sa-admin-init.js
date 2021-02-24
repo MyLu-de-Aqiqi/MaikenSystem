@@ -14,8 +14,20 @@ export default function(sa_admin, sa) {
 
 
 	// ================================= 示例：初始化菜单  =================================
-	sa_admin.initMenu(); // 初始化菜单, 不传参代表默认显示所有菜单 菜单在 ./sa-menu-list.js 里,
-	// sa_admin.initMenu(['1', '1-1', '1-2', '4']); 	// 传入一个id数组, 显示指定菜单  
+	this.sa.ajaxGet('/admin/getMenuTree', function(res) {
+
+		let menuIds = res.data;
+
+		sa_admin.initMenu(menuIds); // 初始化菜单, 不传参代表默认显示所有菜单 菜单在 ./sa-menu-list.js 里,
+
+
+	}.bind(this))
+
+
+
+
+
+	// sa_admin.initMenu(['13', '14', '15', '16']); 	// 传入一个id数组, 显示指定菜单
  
  
 	// ================================= 示例：设置头像昵称  =================================

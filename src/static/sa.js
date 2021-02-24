@@ -6,14 +6,15 @@ import Vue from 'vue';
 var sa = {
 	version: '2.1',
 	update_time: '2020-2-13',
-	info: '改了loading框的样式'
+	info: '改了loading框的样式',
+	menuListNew:[]
 };
 
 // ===========================  当前环境配置  ======================================= 
 (function(){
 	// 公司开发环境
 	var cfg_dev = {
-		api_url: 'http://localhost:8000',	// 所有ajax请求接口父地址
+		api_url: 'http://localhost:8080',	// 所有ajax请求接口父地址
 		web_url: 'http://www.baidu.com'		// 此项目前台地址 (此配置项非必须)
 	}
 	// 服务器测试环境
@@ -23,7 +24,7 @@ var sa = {
 	}
 	// 服务器测试环境
 	var cfg_prod = {
-		api_url: 'http://www.baidu.com',
+		api_url: 'http://localhost:80',
 		web_url: 'http://www.baidu.com'
 	}
 	sa.cfg = cfg_dev; // 最终环境 , 上线前请选择正确的环境 
@@ -68,7 +69,7 @@ var sa = {
 			complete: fn,	// ajax无论成功还是失败都会执行的回调函数  
 		}
 	 */
-	sa.ajax = function(url, data, success200, cfg){
+	sa.ajaxPost = function(url, data, success200, cfg){
 		
 		// 如果是简写模式(省略了data参数)
 		if(typeof data === 'function'){
@@ -148,6 +149,174 @@ var sa = {
 			complete: cfg.complete
 		});
 		
+	};
+
+
+	sa.ajaxPostJson = function(url, data, success200, cfg){
+
+		// 如果是简写模式(省略了data参数)
+		if(typeof data === 'function'){
+			cfg = success200;
+			success200 = data;
+			data = {};
+		}
+
+		// 默认配置
+		var defaultCfg = {
+			msg: '努力加载中...',	// 提示语
+			baseUrl: (url.indexOf('http') === 0 ? '' : sa.cfg.api_url),// 父url，拼接在url前面
+			sleep: 0,	// 休眠n毫秒处理回调函数
+			type: 'post',	// 默认请求类型
+			success200: success200,			// code=200, 代表成功
+			success500: function(res){		// code=500, 代表失败
+				return layer.alert('失败：' + res.msg);
+			},
+			success403: function(res){		// code=403, 代表权限不足
+				return layer.alert("权限不足," + res.msg, {icon: 5});
+			},
+			success401: function(res){		// code=401, 代表未登录
+				return layer.confirm("您当前暂未登录，是否立即登录？", {}, function(){
+					layer.closeAll();
+					return Vue.prototype.sa_admin.openLogin();
+				});
+			},
+			errorfn: function(error){		// ajax发生异常时的默认处理函数
+				return layer.alert("异常：" + error.message);
+			},
+			complete: function(xhr, ts) {	// 成功失败都会执行
+
+			}
+		}
+
+		// 将调用者的配置和默认配置合并
+		cfg = sa.extendJson(cfg, defaultCfg);
+
+		// 打印请求地址和参数, 以便调试
+		console.log("请求地址：" + cfg.baseUrl + url);
+		console.log("请求参数：" + JSON.stringify(data));
+
+		// 开始显示loading图标
+		if(cfg.msg != null){
+			sa.loading(cfg.msg);
+		}
+
+		// 开始请求ajax
+		return $.ajax({
+			url: cfg.baseUrl + url,
+			type: cfg.type,
+			data: data,
+			contentType:"application/json",
+			dataType: 'json',
+			xhrFields: {
+				withCredentials: true // 携带跨域cookie
+			},
+			crossDomain: true,
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader('X-Requested-With','XMLHttpRequest');
+			},
+			success: function(res){
+				setTimeout(function() {
+					sa.hideLoading();
+					// 如果相应的处理函数存在
+					if(cfg['success' + res.code] != undefined) {
+						return cfg['success' + res.code](res);
+					}
+					layer.alert('未知状态码：' + JSON.stringify(res));
+				}, cfg.sleep);
+			},
+			error: function(xhr, type, errorThrown){
+				setTimeout(function() {
+					sa.hideLoading();
+					return cfg.errorfn(xhr, type, errorThrown);
+				}, cfg.sleep);
+			},
+			complete: cfg.complete
+		});
+
+	};
+
+
+	sa.ajaxGet = function(url, data, success200, cfg){
+
+		// 如果是简写模式(省略了data参数)
+		if(typeof data === 'function'){
+			cfg = success200;
+			success200 = data;
+			data = {};
+		}
+
+		// 默认配置
+		var defaultCfg = {
+			msg: '努力加载中...',	// 提示语
+			baseUrl: (url.indexOf('http') === 0 ? '' : sa.cfg.api_url),// 父url，拼接在url前面
+			sleep: 0,	// 休眠n毫秒处理回调函数
+			type: 'get',	// 默认请求类型
+			success200: success200,			// code=200, 代表成功
+			success500: function(res){		// code=500, 代表失败
+				return layer.alert('失败：' + res.msg);
+			},
+			success403: function(res){		// code=403, 代表权限不足
+				return layer.alert("权限不足," + res.msg, {icon: 5});
+			},
+			success401: function(res){		// code=401, 代表未登录
+				return layer.confirm("您当前暂未登录，是否立即登录？", {}, function(){
+					layer.closeAll();
+					return Vue.prototype.sa_admin.openLogin();
+				});
+			},
+			errorfn: function(error){		// ajax发生异常时的默认处理函数
+				// return layer.alert("后台未启动");
+				return layer.alert("异常：" + error.message);
+			},
+			complete: function(xhr, ts) {	// 成功失败都会执行
+
+			}
+		}
+
+		// 将调用者的配置和默认配置合并
+		cfg = sa.extendJson(cfg, defaultCfg);
+
+		// 打印请求地址和参数, 以便调试
+		console.log("请求地址：" + cfg.baseUrl + url);
+		console.log("请求参数：" + JSON.stringify(data));
+
+		// 开始显示loading图标
+		if(cfg.msg != null){
+			sa.loading(cfg.msg);
+		}
+
+		// 开始请求ajax
+		return $.ajax({
+			url: cfg.baseUrl + url,
+			type: cfg.type,
+			data: data,
+			dataType: 'json',
+			xhrFields: {
+				withCredentials: true // 携带跨域cookie
+			},
+			crossDomain: true,
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader('X-Requested-With','XMLHttpRequest');
+			},
+			success: function(res){
+				setTimeout(function() {
+					sa.hideLoading();
+					// 如果相应的处理函数存在
+					if(cfg['success' + res.code] != undefined) {
+						return cfg['success' + res.code](res);
+					}
+					layer.alert('未知状态码：' + JSON.stringify(res));
+				}, cfg.sleep);
+			},
+			error: function(xhr, type, errorThrown){
+				setTimeout(function() {
+					sa.hideLoading();
+					return cfg.errorfn(xhr, type, errorThrown);
+				}, cfg.sleep);
+			},
+			complete: cfg.complete
+		});
+
 	};
 	
 	

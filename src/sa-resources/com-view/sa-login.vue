@@ -43,47 +43,80 @@
 						<el-form-item>
 							<el-button type="primary" size="small" style="width: 100%;" @click="ok()">登录</el-button>
 						</el-form-item>
-						<el-form-item>
-							<span style="color: #999;">测试账号：sa/sa123456</span>
-							<el-link style="float: right; color: #999;" @click="isShow=false">暂不登录</el-link>
-						</el-form-item>
+<!--						<el-form-item>-->
+<!--							<span style="color: #999;">测试账号：sa/sa123456</span>-->
+<!--							<el-link style="float: right; color: #999;" @click="isShow=false">暂不登录</el-link>-->
+<!--						</el-form-item>-->
 					</el-form>
 				</div>
 			</div>
 		</div>
 		<!-- 底部 版权 -->
 		<div style="position: absolute; bottom: 40px; width: 100%; text-align: center; color: #666;">
-			Copyright ©2020 sa-admin模板 | xx省xxx网络科技有限公司 - 提供技术支持
+			Copyright ©2020  | 彭成轩 - 提供技术支持
 		</div>
 	</div>
 </template>
 
 <script>
+	import Vue from "vue";
+
+
 	export default {
 		name: 'sa-login',
 		data() {
 			return {
-				isShow: false,	// 是否显示当前视图 
+				isShow: true,	// 是否显示当前视图
 				m: {
 					username: '',
-					password: ''
+					password: '',
+					resData:{}
 				}
 			}
+		},
+		created: function () {
+			//有token，去后端校验这个token是否能验证通过
+			this.sa.ajaxGet('/admin/tokenVerify',  function(res) {
+				console.log(res.msg)
+				if (res.msg == "OK"){
+					Vue.prototype.sa_admin.closeLogin();
+				}else if (res.msg == "FAIL"){
+					Vue.prototype.sa_admin.openLogin();
+				}
+			}.bind(this))
+
+
+
 		},
 		methods: {
 			// 点击确定 
 			ok() {
-				// 表单验证  
+				// 表单验证
 				if(this.m.username == '' || this.m.password == '' ) {
-					return this.sa.error2('请输入完整');
+					return this.sa.error2('必填项不能为空');
 				}
 				// 开始登录
-				this.sa.ajax2('/acc/doLogin', this.m, function() {
+				this.sa.ajaxGet('/admin/login', this.m, function(res) {
+					localStorage.setItem('permission',res.data)
+					this.m.resData = res.data
 					this.sa.ok2('登录成功，欢迎你：' + this.m.username);
+
 					setTimeout(function() {
-						this.isShow = false;
+						//构造菜单栏
+						this.sa.ajaxGet('/admin/getMenuTree', function(res) {
+
+							let menuIds = res.data;
+
+							this.sa_admin.initMenu(menuIds); // 初始化菜单, 不传参代表默认显示所有菜单 菜单在 ./sa-menu-list.js 里,
+
+							this.isShow = false;
+
+
+						}.bind(this))
 					}.bind(this), 800);
 				}.bind(this))
+
+
 			}
 		}
 	}
