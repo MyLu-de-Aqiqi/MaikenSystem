@@ -37,8 +37,8 @@
 						<div class="sa-wnk">
 							<img src="../../sa-resources/img/icon-order.png" >
 							<div class="sa-wnk-tv">
-								<p class="sa-wnk-title">今日流水</p>
-								<p class="sa-wnk-value">{{todayMoney.dayFinancial}} 元</p>
+								<p class="sa-wnk-title">今日进货流水</p>
+								<p class="sa-wnk-value">{{todayMoney.inDayFinancial}} 元</p>
 							</div>
 						</div>
 					</el-col>
@@ -46,8 +46,8 @@
 						<div class="sa-wnk">
 							<img src="../../sa-resources/img/icon-goods.png" >
 							<div class="sa-wnk-tv">
-								<p class="sa-wnk-title">本月流水</p>
-								<p class="sa-wnk-value">{{todayMoney.monthFinancial}} 元</p>
+								<p class="sa-wnk-title">本月进货流水</p>
+								<p class="sa-wnk-value">{{todayMoney.inMonthFinancial}} 元</p>
 							</div>
 						</div>
 					</el-col>
@@ -55,15 +55,79 @@
 						<div class="sa-wnk">
 							<img src="../../sa-resources/img/icon-money.png" >
 							<div class="sa-wnk-tv">
-								<p class="sa-wnk-title">今年流水</p>
-								<p class="sa-wnk-value">{{todayMoney.yearFinancial}} 元</p>
+								<p class="sa-wnk-title">今年进货流水</p>
+								<p class="sa-wnk-value">{{todayMoney.inYearFinancial}} 元</p>
 							</div>
 						</div>
 					</el-col>
-
-
 				</el-row>
 			</div>
+
+			<div class="s-row s-row-1">
+				<el-row :gutter="14">
+					<el-col :lg="4" :sm="8" :xs="24">
+						<div class="sa-wnk">
+							<img src="../../sa-resources/img/icon-order.png" >
+							<div class="sa-wnk-tv">
+								<p class="sa-wnk-title">今日出货流水</p>
+								<p class="sa-wnk-value">{{todayMoney.outDayFinancial}} 元</p>
+							</div>
+						</div>
+					</el-col>
+					<el-col :lg="4" :sm="8" :xs="24">
+						<div class="sa-wnk">
+							<img src="../../sa-resources/img/icon-goods.png" >
+							<div class="sa-wnk-tv">
+								<p class="sa-wnk-title">本月出货流水</p>
+								<p class="sa-wnk-value">{{todayMoney.outMonthFinancial}} 元</p>
+							</div>
+						</div>
+					</el-col>
+					<el-col :lg="4" :sm="8" :xs="24">
+						<div class="sa-wnk">
+							<img src="../../sa-resources/img/icon-money.png" >
+							<div class="sa-wnk-tv">
+								<p class="sa-wnk-title">今年出货流水</p>
+								<p class="sa-wnk-value">{{todayMoney.outYearFinancial}} 元</p>
+							</div>
+						</div>
+					</el-col>
+				</el-row>
+			</div>
+
+			<div class="s-row s-row-1">
+				<el-row :gutter="14">
+					<el-col :lg="4" :sm="8" :xs="24">
+						<div class="sa-wnk">
+							<img src="../../sa-resources/img/icon-order.png" >
+							<div class="sa-wnk-tv">
+								<p class="sa-wnk-title">今日毛利润</p>
+								<p class="sa-wnk-value">{{todayMoney.dayGrossProfit}} 元</p>
+							</div>
+						</div>
+					</el-col>
+					<el-col :lg="4" :sm="8" :xs="24">
+						<div class="sa-wnk">
+							<img src="../../sa-resources/img/icon-goods.png" >
+							<div class="sa-wnk-tv">
+								<p class="sa-wnk-title">本月毛利润</p>
+								<p class="sa-wnk-value">{{todayMoney.monthGrossProfit}} 元</p>
+							</div>
+						</div>
+					</el-col>
+					<el-col :lg="4" :sm="8" :xs="24">
+						<div class="sa-wnk">
+							<img src="../../sa-resources/img/icon-money.png" >
+							<div class="sa-wnk-tv">
+								<p class="sa-wnk-title">今年毛利润</p>
+								<p class="sa-wnk-value">{{todayMoney.yearGrossProfit}} 元</p>
+							</div>
+						</div>
+					</el-col>
+				</el-row>
+			</div>
+
+
 
 <!--			&lt;!&ndash; 参数栏 &ndash;&gt;-->
 <!--			<div>-->
@@ -117,7 +181,7 @@
 				<el-table-column label="财务情况">
 					<template slot-scope="s">
 						<b style="color: green;" v-if="s.row.stockFlag==0">进货</b>
-						<b style="color: red;" v-if="s.row.stockFlag==2">出货</b>
+						<b style="color: red;" v-if="s.row.stockFlag==1">出货</b>
 					</template>
 				</el-table-column>
 				<el-table-column label="品名" prop="name"></el-table-column>
@@ -261,10 +325,10 @@
 		},
 		created: function(){
 			this.f5();
-			this.$notify.info({
-				title: '消息',
-				message: '本页面展示表格的常见显示方式'
-			});
+			// this.$notify.info({
+			// 	title: '消息',
+			// 	message: '本页面展示表格的常见显示方式'
+			// });
 		}
 	}
 </script>

@@ -153,10 +153,10 @@
 		},
 		created: function(){
 			this.f5();
-			this.$notify.info({
-				title: '消息',
-				message: '本页面展示表格的常见显示方式'
-			});
+			// this.$notify.info({
+			// 	title: '消息',
+			// 	message: '本页面展示表格的常见显示方式'
+			// });
 		}
 	}
 </script>

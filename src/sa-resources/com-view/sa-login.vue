@@ -76,14 +76,23 @@
 		},
 		created: function () {
 			//有token，去后端校验这个token是否能验证通过
-			this.sa.ajaxGet('/admin/tokenVerify',  function(res) {
-				console.log(res.msg)
-				if (res.msg == "OK"){
-					Vue.prototype.sa_admin.closeLogin();
-				}else if (res.msg == "FAIL"){
-					Vue.prototype.sa_admin.openLogin();
-				}
-			}.bind(this))
+			//看cookie是否有，如果有cookie，就去校验，没有就不去校验了
+			let cookie = this.sa.getCookie('satoken');
+
+			if (cookie.length > 0){
+				this.sa.ajaxGet('/admin/tokenVerify',  function(res) {
+					if (res.msg == "OK"){
+						Vue.prototype.sa_admin.closeLogin();
+					}else if (res.msg == "FAIL"){
+						Vue.prototype.sa_admin.openLogin();
+					}
+				}.bind(this))
+			}
+			// else {
+			// 	this.sa_admin.openLogin();
+			// }
+
+
 
 
 
@@ -97,17 +106,38 @@
 				}
 				// 开始登录
 				this.sa.ajaxGet('/admin/login', this.m, function(res) {
-					localStorage.setItem('permission',res.data)
-					this.m.resData = res.data
+					localStorage.setItem('permission',JSON.stringify(res.data))
+					this.m.resData = res.data;
 					this.sa.ok2('登录成功，欢迎你：' + this.m.username);
+
+
+
 
 					setTimeout(function() {
 						//构造菜单栏
 						this.sa.ajaxGet('/admin/getMenuTree', function(res) {
 
+							//初始化菜单
 							let menuIds = res.data;
 
 							this.sa_admin.initMenu(menuIds); // 初始化菜单, 不传参代表默认显示所有菜单 菜单在 ./sa-menu-list.js 里,
+
+							// 初始化名字
+							this.sa_admin.$nextTick(function() {
+								let item = localStorage.getItem('permission');
+								if (item != null){
+									item = JSON.parse(item);
+
+									this.sa_admin.user = {
+										username: item.admin.name, // 昵称
+										avatar: document.querySelector('.admin-logo').src // 头像地址
+									}
+								}
+							})
+
+							//刷新一次
+							// history.go(0);
+
 
 							this.isShow = false;
 

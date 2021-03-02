@@ -903,8 +903,8 @@ export default {
 		},
 		// 打印版本
 		printVesion: function() {
-			console.log('欢迎使用sa-admin(vue单页版)，当前版本：' + this.version + "，更新于：" + this.update_time + "，GitHub地址：" + this.github_url);
-			console.log('如在使用中发现任何bug或者疑问，请加入QQ群交流：782974737，点击加入：' + 'https://jq.qq.com/?_wv=1027&k=5DHN5Ib');
+			// console.log('欢迎使用sa-admin(vue单页版)，当前版本：' + this.version + "，更新于：" + this.update_time + "，GitHub地址：" + this.github_url);
+			// console.log('如在使用中发现任何bug或者疑问，请加入QQ群交流：782974737，点击加入：' + 'https://jq.qq.com/?_wv=1027&k=5DHN5Ib');
 		},
 		// 初始化window相关配置 
 		initWindow: function() {

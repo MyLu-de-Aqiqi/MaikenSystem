@@ -4,6 +4,8 @@
  */
 
 // import Vue from 'vue';
+import Vue from "vue";
+
 export default function(sa_admin, sa) {
 
 
@@ -14,14 +16,22 @@ export default function(sa_admin, sa) {
 
 
 	// ================================= 示例：初始化菜单  =================================
-	this.sa.ajaxGet('/admin/getMenuTree', function(res) {
+	let cookie = this.sa.getCookie('satoken');
 
-		let menuIds = res.data;
+	if (cookie.length > 0){
+		sa.ajaxGet('/admin/getMenuTree', function(res) {
 
-		sa_admin.initMenu(menuIds); // 初始化菜单, 不传参代表默认显示所有菜单 菜单在 ./sa-menu-list.js 里,
+			let menuIds = res.data;
+
+			sa_admin.initMenu(menuIds); // 初始化菜单, 不传参代表默认显示所有菜单 菜单在 ./sa-menu-list.js 里,
 
 
-	}.bind(this))
+		}.bind(this))
+	}else {
+		Vue.prototype.sa_admin.openLogin();
+	}
+
+
 
 
 
@@ -31,13 +41,19 @@ export default function(sa_admin, sa) {
  
  
 	// ================================= 示例：设置头像昵称  =================================
-	// 
-	sa_admin.$nextTick(function() {
-		sa_admin.user = {
-			username: 'root', // 昵称 
-			avatar: document.querySelector('.admin-logo').src // 头像地址  
-		}
-	})
+	//
+// 初始化名字
+		this.sa_admin.$nextTick(function() {
+			let item = localStorage.getItem('permission');
+			if (item != null){
+				item = JSON.parse(item);
+
+				this.sa_admin.user = {
+					username: item.admin.name, // 昵称
+					avatar: document.querySelector('.admin-logo').src // 头像地址
+				}
+			}
+		})
 	
 	
 	// ================================= 示例：js操作菜单  =================================
@@ -57,25 +73,27 @@ export default function(sa_admin, sa) {
 
 	// ================================= 示例：设置登录后的头像处，下拉可以出现的选项  =================================
 	sa_admin.dropList = [ // 头像点击处可操作的选项
-		{
-			name: '我的资料',
-			click: function() {
-				sa_admin.$message('点击了我的资料，你可以参照文档重写此函数');
-			}
-		},
-		{
-			name: '切换账号',
-			click: function() {
-				sa_admin.openLogin();	// 打开登陆视图 
-			}
-		},
+		// {
+		// 	name: '我的资料',
+		// 	click: function() {
+		// 		sa_admin.$message('点击了我的资料，你可以参照文档重写此函数');
+		// 	}
+		// },
+		// {
+		// 	name: '切换账号',
+		// 	click: function() {
+		// 		sa_admin.openLogin();	// 打开登陆视图
+		// 	}
+		// },
 		{
 			name: '退出登录',
 			click: function() {
 				// sa_admin.$message('点击了退出登录，你可以参照文档重写此函数');
 				sa.confirm('退出登录？', function() {
-					sa.ajax2('/acc/exit', function() {
+					sa.ajaxGet('/admin/logout', function() {
 						sa.alert('注销成功', function() {
+							document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+							localStorage.removeItem('permission');
 							sa_admin.openLogin();
 						})
 					}, {msg: '正在注销'});
@@ -87,7 +105,7 @@ export default function(sa_admin, sa) {
 
 	// 初始化模板, 必须调用
 	sa_admin.init();
-	// 或者这样: 
+	// 或者这样:
 	// sa_admin.init({
 	// 	is_show_tabbar: false,	// 关闭tabbar栏, 取而显示的是一个面包屑导航栏 
 	//  is_reme_open: false		// 是否记住上一次最后打开的窗口, 默认为true, 配置为false后, 每次刷新不再自动打开上一次最后打开的窗口(也不再有锚链接智能tab调准)

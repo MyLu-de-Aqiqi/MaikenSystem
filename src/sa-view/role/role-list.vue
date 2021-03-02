@@ -123,13 +123,11 @@
 				// }.bind(this), {res: mockData});
 
 				this.sa.ajaxGet('/role/getList', {}, function(res){
-					console.log("roles:"+res.data)
 					this.dataList = this.sa.listAU(res.data);	// 数据
 				}.bind(this), {res: mockData});
 			},
 			// 修改
 			update: function (data) {
-				console.log("222")
 				var data2 = this.sa.copyJSON(data);
 				// data2.create_time = undefined;
 				// data2.delete("createTime")
@@ -137,7 +135,6 @@
 				delete data2.is_update
 				delete data2.menus
 
-				console.log("data2:"+JSON.stringify(data2))
 				this.sa.ajaxPost('/role/update', data2, function(){
 					this.sa.ok('修改成功');
 					data.is_update = false;

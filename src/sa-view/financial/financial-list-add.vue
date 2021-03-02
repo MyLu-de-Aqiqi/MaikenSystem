@@ -68,7 +68,6 @@
 		methods: {
 			// 打开 
 			open: function(id) {
-				console.log("id:"+id)
 				this.id = id;
 				this.isShow = true;
 				if(id == 0){	// 如果是添加

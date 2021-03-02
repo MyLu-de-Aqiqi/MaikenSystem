@@ -80,7 +80,7 @@ export default [
 		info: '对系统角色权限的分配等设计，敏感度较高，请谨慎授权',
 		childList: [
 			{id: '20', name: '角色列表', view: () => import('@/sa-view/role/role-list.vue') },
-			{id: '21', name: '菜单预览', view: () => import('@/sa-view/role/menu-list.vue') }
+			// {id: '21', name: '菜单预览', view: () => import('@/sa-view/role/menu-list.vue') }
 		]
 	},
 	{
@@ -90,7 +90,7 @@ export default [
 		info: '对用户列表、添加、统计等等...',
 		childList: [
 			{id: '23', name: '用户列表', view: () => import('@/sa-view/user/user-list.vue')  },
-			{id: '24', name: '用户添加', view: () => import('@/sa-view/user/user-add.vue'), params: {username: '王铁汉'} },
+			// {id: '24', name: '用户添加', view: () => import('@/sa-view/user/user-add.vue'), params: {username: '王铁汉'} },
 		],
 		
 		// let template = '<div class="iframe-view-box"><iframe class="iframe-view" src="' + menu.url + '"></iframe></div>';
@@ -113,9 +113,7 @@ export default [
 		icon: 'el-icon-setting',
 		childList: [
 			{id: '7-1', name: '登录页', click: function(sa_admin, sa) {	// 点击这个菜单时将执行这个函数 
-				console.log(sa_admin);
-				console.log(sa);
-				sa_admin.openLogin();	// 打开登录页面 
+				sa_admin.openLogin();	// 打开登录页面
 			}},
 			{id: '7-2', name: '403无权限', click: function(sa_admin) {	
 				sa_admin.open403();	// 打开403页面 

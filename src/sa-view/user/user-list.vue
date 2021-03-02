@@ -14,6 +14,12 @@
 				<el-form-item style="min-width: 0px;">
 					<el-button type="primary" icon="el-icon-search" @click="p.current = 1; f5()">查询</el-button>
 				</el-form-item>
+
+				<el-form-item style="min-width: 0px;">
+					<el-button type="primary" icon="el-icon-search" @click="add()">新增</el-button>
+				</el-form-item>
+
+
 				<br />
 				<el-form-item label="综合排序：" class="s-radio-text">
 					<el-radio-group v-model="p.sort_type">
@@ -28,7 +34,7 @@
 			<!-- <div class="c-title">数据列表</div> -->
 			<el-table :data="dataList" size="mini">
 				<el-table-column label="编号" prop="id" width="70px" > </el-table-column>
-				<el-table-column label="昵称" prop="name" width="200px">
+				<el-table-column label="账号" prop="name" width="200px">
 					<template slot-scope="s">
 <!--						<img :src="s.row.avatar" @click="sa.showImage(s.row.avatar, '400px', '400px')"-->
 <!--							style="width: 3em; height: 3em; float: left; margin-right: 1em; border-radius: 50%; cursor: pointer;" >-->
@@ -79,14 +85,20 @@
 			</div>
 		</div>
 		<!-- 给layer打一波广告 -->
-		<div class="c-panel" style="background-color: rgba(0,0,0,0);">
-			layer：<el-link type="primary" href="http://layer.layui.com/" target="_blank">
-				一个可以让你想到即可做到的JavaScript弹窗（层）解决方案
-			</el-link>
-		</div>
+<!--		<div class="c-panel" style="background-color: rgba(0,0,0,0);">-->
+<!--			layer：<el-link type="primary" href="http://layer.layui.com/" target="_blank">-->
+<!--				一个可以让你想到即可做到的JavaScript弹窗（层）解决方案-->
+<!--			</el-link>-->
+<!--		</div>-->
 
 		<!-- 增改组件 -->
 		<add-or-update ref="add-or-update"></add-or-update>
+
+		<user-show ref="user-show"></user-show>
+
+		<user-edit ref="user-edit"></user-edit>
+
+		<user-add ref="user-add"></user-add>
 
 	</div>
 </template>
@@ -94,9 +106,15 @@
 <script>
 
 	import addOrUpdate from '../user/art-add-new';
+	import UserShow from './user-show';
+	import UserEdit from './user-edit';
+	import UserAdd from './user-add';
 	export default {
 		components: {
-			addOrUpdate
+			UserShow,
+			addOrUpdate,
+			UserEdit,
+			UserAdd
 		},
 		data() {
 			return {
@@ -108,6 +126,7 @@
 					// end_time: new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate(),	// 本月当日
 					current: 1,
 					size: 10,
+					keyword:'',
 				},
 				dataCount: 0,
 				dataList: []
@@ -121,6 +140,9 @@
 					this.dataCount = res.data.total;		// 分页
 				}.bind(this));
 			},
+			add(){
+				this.$refs['user-add'].open();
+			},
 			// 删除
 			del: function(data) {
 				this.sa.confirm('是否删除，此操作不可撤销', function() {
@@ -132,18 +154,24 @@
 			},
 			// 查看
 			get: function(data) {
-				var str = '<div>';
-				str += '<p>编号：' + data.id + '</p>';
-				str += '<p>昵称：' + data.username + '</p>';
-				str += '<p>性别：' + data.sex + '</p>';
-				str += '<p>当前状态：<b>' + (data.status == 1 ? '正常' : '禁用') + '</b></p>';
-				str += '<p>注册方式：' + data.create_type + '</p>';
-				str += '<p>注册时间：' + data.create_time + '</p>';
-				str += '</div>';
-				this.sa.alert(str);
+				// 打开user-show
+				this.$refs['user-show'].open(data);
+
+				// var str = '<div>';
+				// str += '<p>编号：' + data.id + '</p>';
+				// str += '<p>昵称：' + data.name + '</p>';
+				// str += '<p>上次登陆id：' + data.loginIp + '</p>';
+				// str += '<p>上次登陆时间：' + data.loginTime + '</p>';
+				// str += '<p>联系电话：' + data.phone + '</p>';
+				// // str += '<p>性别：' + data.sex + '</p>';
+				// str += '<p>当前状态：<b>' + (data.status == 1 ? '正常' : '禁用') + '</b></p>';
+				// // str += '<p>注册方式：' + data.create_type + '</p>';
+				// str += '<p>注册时间：' + data.createTime + '</p>';
+				// str += '</div>';
+				// this.sa.alert(str);
 			},
 			update: function(data) {
-				this.$refs['add-or-update'].open(data.id);
+				this.$refs['user-edit'].open(data);
 			},
 		},
 

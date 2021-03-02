@@ -33,6 +33,19 @@ var sa = {
 
 // ===========================  ajax的封装  ======================================= 
 (function(){
+
+	sa.getCookie = function (c_name) {
+		if (document.cookie.length>0) {
+			let c_start=document.cookie.indexOf(c_name + '=')
+			if (c_start!=-1) {
+				c_start=c_start + c_name.length+1
+				let c_end=document.cookie.indexOf(';',c_start)
+				if (c_end==-1) c_end=document.cookie.length
+				return unescape(document.cookie.substring(c_start,c_end))
+			}
+		}
+		return '';
+	}
 		
 	/** 
 		对jquery的ajax再封装, 包括:  全局的baseURL, 跨域配置, 自动loading图标, 自动的异常函数处理等等... 
@@ -97,9 +110,9 @@ var sa = {
 					return Vue.prototype.sa_admin.openLogin();
 				});
 			},
-			errorfn: function(error){		// ajax发生异常时的默认处理函数
-				return layer.alert("异常：" + error.message);
-			},
+			// errorfn: function(error){		// ajax发生异常时的默认处理函数
+			// 	return layer.alert("异常：" + error.message);
+			// },
 			complete: function(xhr, ts) {	// 成功失败都会执行 
 				
 			}
@@ -180,9 +193,9 @@ var sa = {
 					return Vue.prototype.sa_admin.openLogin();
 				});
 			},
-			errorfn: function(error){		// ajax发生异常时的默认处理函数
-				return layer.alert("异常：" + error.message);
-			},
+			// errorfn: function(error){		// ajax发生异常时的默认处理函数
+			// 	return layer.alert("异常：" + error.message);
+			// },
 			complete: function(xhr, ts) {	// 成功失败都会执行
 
 			}
@@ -253,7 +266,7 @@ var sa = {
 			type: 'get',	// 默认请求类型
 			success200: success200,			// code=200, 代表成功
 			success500: function(res){		// code=500, 代表失败
-				return layer.alert('失败：' + res.msg);
+				return layer.alert('后台异常：' + res.msg);
 			},
 			success403: function(res){		// code=403, 代表权限不足
 				return layer.alert("权限不足," + res.msg, {icon: 5});
@@ -266,7 +279,8 @@ var sa = {
 			},
 			errorfn: function(error){		// ajax发生异常时的默认处理函数
 				// return layer.alert("后台未启动");
-				return layer.alert("异常：" + error.message);
+				console.log(JSON.stringify(error))
+				return layer.alert("异常：" + JSON.stringify(error));
 			},
 			complete: function(xhr, ts) {	// 成功失败都会执行
 

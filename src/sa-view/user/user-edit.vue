@@ -4,32 +4,35 @@
 
 <template>
 	<el-dialog
-					v-if="true"
-					:title="'用户新增'"
-					:visible.sync="isShow"
-					width="450px"
-					top="5vh"
-					:append-to-body="true"
-					:destroy-on-close="true"
-					:close-on-click-modal="false"
-					custom-class="full-dialog"
-	>
+		v-if="userInfo"
+		:title="userInfo.id == 0 ? '用户修改' : '用户修改'"
+		:visible.sync="isShow"
+		width="450px"
+		top="5vh"
+		:append-to-body="true"
+		:destroy-on-close="true"
+		:close-on-click-modal="false"
+		custom-class="full-dialog"
+		>
 		<div class="vue-box">
 			<div class="c-panel">
 				<!-- 参数栏 -->
 				<br>
-				<el-form size="mini" v-if="userInfo">
-					<!--					<el-form-item label="编号：">-->
-					<!--						<el-input v-model="m.id" disabled></el-input>-->
-					<!--					</el-form-item>-->
+				<el-form size="mini">
+<!--					<el-form-item label="编号：">-->
+<!--						<el-input v-model="m.id" disabled></el-input>-->
+<!--					</el-form-item>-->
 					<el-form-item label="编号：">
 						<el-input v-model="userInfo.id" ></el-input>
 					</el-form-item>
 					<el-form-item label="账号：">
 						<el-input v-model="userInfo.name" ></el-input>
 					</el-form-item>
-					<el-form-item label="密码：">
-						<el-input v-model="userInfo.pw" ></el-input>
+					<el-form-item label="上次登陆id：">
+						<el-input v-model="userInfo.loginIp" ></el-input>
+					</el-form-item>
+					<el-form-item label="上次登陆时间：">
+						<el-input v-model="userInfo.loginTime" ></el-input>
 					</el-form-item>
 					<el-form-item label="电话：">
 						<el-input v-model="userInfo.phone" ></el-input>
@@ -74,13 +77,7 @@
 				isShow: false,
 				id: 0,
 				m:null,
-				userInfo: {
-					id:0,
-					name:'',
-					pw:'',
-					phone:'',
-					roles:[],
-				},
+				userInfo: null,
 				dataList: [],		// 数据集合
 				roleList:[], // 角色集合
 				allRoleList:[],
@@ -89,25 +86,27 @@
 			}
 		},
 		methods: {
-			// 打开
-			open: function() {
-				console.log("来到add了")
-				this.create_m();
+			// 打开 
+			open: function(userInfo) {
 				this.isShow = true;
+				this.userInfo = userInfo;
+				console.log("opem:"+JSON.stringify(this.userInfo))
+				if (userInfo.roles != null){
+					this.roleList = userInfo.roles;
+				}
 
 			},
 			f5(){
-				if (this.userInfo != null){
-					if (this.userInfo.roles != null){
-						this.roleList = this.userInfo.roles;
-					}
+				console.log("this.userInfo:"+JSON.stringify(this.userInfo))
+				if (this.userInfo.roles != null){
+					this.roleList = this.userInfo.roles;
 				}
 			},
 			ok(){
 				let po = this.userInfo;
 				po.roles = this.roleList;
 
-				this.sa.ajaxPostJson('/user/add', JSON.stringify(po), function() {
+				this.sa.ajaxPostJson('/user/update', JSON.stringify(po), function() {
 					self.sa.alert('更新成功', function() {
 						close();	// 父视图刷新
 						this.isShow = false;
@@ -144,7 +143,7 @@
 				this.roleList.splice(index,1);
 			},
 
-			// 表单验证
+			// 表单验证  
 
 			//关闭视图
 			close:function(){
@@ -154,7 +153,7 @@
 				// this.m = null;
 			},
 			// 提交
-			// 创建一个空的model
+			// 创建一个空的model 
 			create_m: function() {
 				return {
 					productname: '',
