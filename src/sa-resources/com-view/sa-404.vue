@@ -1,7 +1,7 @@
 <style scoped>
 	.content-box{
-		display: flex; 
-		justify-content: center; 
+		display: flex;
+		justify-content: center;
 		align-items: center;
 		background-color: #EEE;
 		cursor: pointer;
@@ -43,7 +43,7 @@
 			}
 		},
 		methods: {
-			
+
 		}
 	}
 </script>

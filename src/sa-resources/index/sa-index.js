@@ -6,6 +6,9 @@ import saLogin from './../com-view/sa-login.vue';	// 组件 login
 import sa403 from './../com-view/sa-403.vue';	// 组件 403
 import sa404 from './../com-view/sa-404.vue';	// 组件 404
 import sa500 from './../com-view/sa-500.vue';	// 组件 500
+import UserEditPw from '../../sa-view/user/user-edit-pw';
+
+
 // sa_admin对象 
 export default {
 	components: {
@@ -14,14 +17,15 @@ export default {
 		saLogin,
 		sa403,
 		sa404,
-		sa500
+		sa500,
+		UserEditPw
 	},
 	data: function() {
 		// 首页
 		var homeTab = {
 			id: 'home',	// 唯一标识 
 			name: '首页',
-			view: ()=> import('./../com-view/sa-home.vue'),
+			view: ()=> import('./../com-view/sa-home2.vue'),
 			hide_close: true,	// 隐藏关闭键 
 			is_rend: true,
 		}
@@ -827,6 +831,12 @@ export default {
 		openLogin: function() {
 			this.$refs['sa-login'].isShow = true;
 		},
+		//打开修改密码界面
+		openEditPw: function() {
+			this.$refs['user-edit-pw'].isShow = true;
+			// this.$refs['sa404'].isShow = true;
+		},
+
 		// 关闭login页面
 		closeLogin: function() {
 			this.$refs['sa-login'].isShow = false;

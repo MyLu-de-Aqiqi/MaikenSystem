@@ -259,7 +259,8 @@
 		
 		<!-- 500视图 -->
 		<sa500 ref="sa500"></sa500>
-		
+
+		<user-edit-pw ref="user-edit-pw"></user-edit-pw>
 		
 	</div>
 </template>

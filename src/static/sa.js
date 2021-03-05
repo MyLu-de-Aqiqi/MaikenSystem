@@ -14,7 +14,8 @@ var sa = {
 (function(){
 	// 公司开发环境
 	var cfg_dev = {
-		api_url: 'http://localhost:8080',	// 所有ajax请求接口父地址
+		// api_url: 'http://localhost:8080',	// 所有ajax请求接口父地址
+		api_url: 'http://106.14.247.150',	// 所有ajax请求接口父地址
 		web_url: 'http://www.baidu.com'		// 此项目前台地址 (此配置项非必须)
 	}
 	// 服务器测试环境

@@ -9,10 +9,11 @@ import Vue from "vue";
 export default function(sa_admin, sa) {
 
 
+
 	// ================================= 示例：模板基础信息  =================================
-	sa_admin.title = 'SA-后台模板';
+	sa_admin.title = '麦肯系统后台';
 	// sa_admin.logo_url = '图片地址';    // 设置logo图标地址   默认值空, 代表使用：./admin-logo.png
-	// sa_admin.icon_url = '图片地址';    // 设置icon图标地址   默认值空, 代表使用：./favicon.ico
+	// sa_admin.icon_url = '图片地址';    // 设置icon图标地址  s 默认值空, 代表使用：./favicon.ico
 
 
 	// ================================= 示例：初始化菜单  =================================
@@ -73,12 +74,12 @@ export default function(sa_admin, sa) {
 
 	// ================================= 示例：设置登录后的头像处，下拉可以出现的选项  =================================
 	sa_admin.dropList = [ // 头像点击处可操作的选项
-		// {
-		// 	name: '我的资料',
-		// 	click: function() {
-		// 		sa_admin.$message('点击了我的资料，你可以参照文档重写此函数');
-		// 	}
-		// },
+		{
+			name: '修改密码',
+			click: function() {
+				Vue.prototype.sa_admin.openEditPw();
+			}
+		},
 		// {
 		// 	name: '切换账号',
 		// 	click: function() {
