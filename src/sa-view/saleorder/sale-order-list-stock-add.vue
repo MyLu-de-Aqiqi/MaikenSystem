@@ -4,24 +4,24 @@
 
 <template>
 	<el-dialog
-		v-if="OrderDetail"
-		:title="OrderDetail.id == 0 ? '数据增加' : '数据修改'"
-		:visible.sync="isShow"
-		width="400px"
-		top="5vh"
-		:append-to-body="true"
-		:destroy-on-close="true"
-		:close-on-click-modal="false"
-		custom-class="full-dialog"
-		>
+					v-if="OrderDetail"
+					:title="OrderDetail.id == 0 ? '数据增加' : '数据修改'"
+					:visible.sync="isShow"
+					width="400px"
+					top="5vh"
+					:append-to-body="true"
+					:destroy-on-close="true"
+					:close-on-click-modal="false"
+					custom-class="full-dialog"
+	>
 		<div class="vue-box">
 			<div class="c-panel">
 				<!-- 参数栏 -->
 				<br>
 				<el-form size="mini">
-<!--					<el-form-item label="编号：">-->
-<!--						<el-input v-model="m.id" disabled></el-input>-->
-<!--					</el-form-item>-->
+					<!--					<el-form-item label="编号：">-->
+					<!--						<el-input v-model="m.id" disabled></el-input>-->
+					<!--					</el-form-item>-->
 					<el-form-item label="产品名称：">
 						<el-input v-model="OrderDetail.productname"></el-input>
 					</el-form-item>
@@ -49,15 +49,15 @@
 
 
 
-<!--					<el-form-item label="图标：">-->
-<!--						<el-input v-model="m.icon"></el-input>-->
-<!--					</el-form-item>-->
-<!--					<el-form-item label="状态：">-->
-<!--						<el-radio-group v-model="m.status">-->
-<!--							<el-radio :label="1">正常</el-radio>-->
-<!--							<el-radio :label="2">禁用</el-radio>-->
-<!--						</el-radio-group>-->
-<!--					</el-form-item>-->
+					<!--					<el-form-item label="图标：">-->
+					<!--						<el-input v-model="m.icon"></el-input>-->
+					<!--					</el-form-item>-->
+					<!--					<el-form-item label="状态：">-->
+					<!--						<el-radio-group v-model="m.status">-->
+					<!--							<el-radio :label="1">正常</el-radio>-->
+					<!--							<el-radio :label="2">禁用</el-radio>-->
+					<!--						</el-radio-group>-->
+					<!--					</el-form-item>-->
 				</el-form>
 			</div>
 		</div>
@@ -80,7 +80,7 @@
 			}
 		},
 		methods: {
-			// 打开 
+			// 打开
 			open: function() {
 				// console.log("id:"+id)
 				// this.id = id;
@@ -159,7 +159,7 @@
 
 		},
 		created: function(){
-			
+
 		}
 	}
 </script>
