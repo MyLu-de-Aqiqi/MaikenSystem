@@ -84,6 +84,8 @@
 					if (res.msg == "OK"){
 						Vue.prototype.sa_admin.closeLogin();
 					}else if (res.msg == "FAIL"){
+						document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+						localStorage.removeItem('permission');
 						Vue.prototype.sa_admin.openLogin();
 					}
 				}.bind(this))
@@ -107,6 +109,11 @@
 				// 开始登录
 				this.sa.ajaxGet('/admin/login', this.m, function(res) {
 					localStorage.setItem('permission',JSON.stringify(res.data))
+					if (res.data.tokenInfo){
+						localStorage.tokenName = res.data.tokenInfo.tokenName;
+						localStorage.tokenValue = res.data.tokenInfo.tokenValue;
+					}
+
 					this.m.resData = res.data;
 					this.sa.ok2('登录成功，欢迎你：' + this.m.username);
 

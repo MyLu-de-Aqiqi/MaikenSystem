@@ -4,26 +4,23 @@
 
 <template>
 	<el-dialog
-		v-if="m"
-		:title="m.id == 0 ? '数据增加' : '数据修改'"
-		:visible.sync="isShow"
-		width="1000px"
-		top="5vh"
-		:append-to-body="true"
-		:destroy-on-close="true"
-		:close-on-click-modal="false"
-		custom-class="full-dialog"
-		>
+					v-if="m"
+					:visible.sync="isShow"
+					width="1000px"
+					top="5vh"
+					:append-to-body="true"
+					:destroy-on-close="true"
+					:close-on-click-modal="false"
+					custom-class="full-dialog"
+	>
 		<div class="vue-box">
 			<div class="c-panel">
 				<!-- 参数栏 -->
 				<br>
 				<el-form size="mini">
-<!--					<el-form-item label="编号：">-->
-<!--						<el-input v-model="m.id" disabled></el-input>-->
-<!--					</el-form-item>-->
+
 					<el-form-item label="销售订单号：">
-<!--						<b style="color: red;margin-right: 3px">*</b>-->
+						<!--						<b style="color: red;margin-right: 3px">*</b>-->
 
 						<el-input v-model="m.sid"></el-input>
 						<b style="color: red;margin-left: 5px">必填</b>
@@ -48,7 +45,7 @@
 						<el-input v-model="m.sheetnumber"></el-input>
 					</el-form-item>
 					<el-form-item label="接单日期：">
-<!--						<el-input v-model="m.ordertime" type="date"></el-input>-->
+						<!--						<el-input v-model="m.ordertime" type="date"></el-input>-->
 						<el-date-picker
 										v-model="m.ordertime"
 										type="datetime"
@@ -63,7 +60,7 @@
 						<b style="color: red;margin-left: 5px">必填</b>
 					</el-form-item>
 					<el-form-item label="要求发货日期：">
-<!--						<el-input v-model="m.requireddeliverydate" type="date" ></el-input>-->
+						<!--						<el-input v-model="m.requireddeliverydate" type="date" ></el-input>-->
 						<el-date-picker
 										v-model="m.requireddeliverydate"
 										type="datetime"
@@ -127,7 +124,7 @@
 						<el-input v-model="m.remark"></el-input>
 					</el-form-item>
 
-					<el-button size="small" @click="add()">新 增 出 货</el-button>
+					<el-button size="small" @click="addStock()">新 增 出 货</el-button>
 
 					<el-table style="margin-top: 10px" :data="orderDetailList" size="mini">
 						<el-table-column label="产品名称" prop="productname"></el-table-column>
@@ -146,17 +143,15 @@
 					</el-table>
 
 
-
-
-<!--					<el-form-item label="图标：">-->
-<!--						<el-input v-model="m.icon"></el-input>-->
-<!--					</el-form-item>-->
-<!--					<el-form-item label="状态：">-->
-<!--						<el-radio-group v-model="m.status">-->
-<!--							<el-radio :label="1">正常</el-radio>-->
-<!--							<el-radio :label="2">禁用</el-radio>-->
-<!--						</el-radio-group>-->
-<!--					</el-form-item>-->
+					<!--					<el-form-item label="图标：">-->
+					<!--						<el-input v-model="m.icon"></el-input>-->
+					<!--					</el-form-item>-->
+					<!--					<el-form-item label="状态：">-->
+					<!--						<el-radio-group v-model="m.status">-->
+					<!--							<el-radio :label="1">正常</el-radio>-->
+					<!--							<el-radio :label="2">禁用</el-radio>-->
+					<!--						</el-radio-group>-->
+					<!--					</el-form-item>-->
 				</el-form>
 			</div>
 		</div>
@@ -165,13 +160,12 @@
 			<el-button size="small" type="primary" @click="ok()">确 定</el-button>
 		</span>
 
-		<stock-add ref="stock-add" @addd="upload"></stock-add>
 
+		<stock-add ref="stock-add" @addd="upload"></stock-add>
 	</el-dialog>
 </template>
 
 <script>
-	// import mockDataList from '../case/mock-data-list.js';
 	import stockAdd from './sale-order-list-stock-add';
 	export default {
 		components:{
@@ -181,57 +175,36 @@
 			return {
 				isShow: false,
 				id: 0,
-				m: null,
-				orderDetailList: [],		// 数据集合
+				m:null,
+				OrderDetail: null,
+				orderDetailList:[],
+				dataList: [],		// 数据集合
 			}
 		},
 		methods: {
 			// 打开 
-			open: function(id) {
-				console.log("id:"+id)
-				this.id = id;
+			open: function(data) {
 				this.isShow = true;
-				if(id == 0){	// 如果是添加
-					this.m = this.create_m();
-				} else {
-					// id 非 0 代表 是要修改 先查询一下，把旧值显示在input中  
-					this.sa.ajaxGet('/saleOrder/getById', {pid: id}, function(res) {
-						this.m = res.data;
-					}.bind(this));
-				}
+				this.m = data;
+				this.orderDetailList = data.orderDetailList;
+
+
 			},
 			del(data,index){
-				console.log(data)
-				console.log("delLog:"+index)
 				this.orderDetailList.splice(index,1);
 			},
-			add:function(){
-				this.$refs['stock-add'].open();
+			addStock:function(){
+				this.$emit('addd',this.OrderDetail);
 			},
 			// 表单验证  
 			submit_check: function() {
 				var m = this.m;
 				var sa = this.sa;
-				if(sa.isNull(m.sid)) {
-					return sa.error('请输入销售订单号');
+				if(sa.isNull(m.name)) {
+					return sa.error('请输入名称');
 				}
-				if(sa.isNull(m.clientname)) {
-					return sa.error('请输入客户名称');
-				}
-				if(sa.isNull(m.ordertime)) {
-					return sa.error('请输入接单日期');
-				}
-				if(sa.isNull(m.requireddeliverydate)) {
-					return sa.error('请输入要求发货日期');
-				}
-				if(sa.isNull(m.contact)) {
-					return sa.error('请输入联系人');
-				}
-				if(sa.isNull(m.phone)) {
-					return sa.error('请输入联系电话');
-				}
-				if(sa.isNull(m.saleman)) {
-					return sa.error('请输入销售员');
+				if(sa.isNull(m.icon)) {
+					return sa.error('请输入图标1');
 				}
 				return 'ok';
 			},
@@ -239,83 +212,56 @@
 			close:function(){
 				this.isShow = false;
 				// this.m = null;
-				this.orderDetailList = [];
 				this.$parent.f5();
+			},
+			add:function(){
+				this.$refs['stock-add'].open();
 			},
 			// 提交 
 			ok: function() {
-				// 表单验证
-				if(this.submit_check() != 'ok') {
-					return;
-				}
-				// 开始增加或修改
 				let self = this;
-				if(this.id == 0) {
-					// id == 0 为增加
-					let po = this.m;
-					// po.ordertime = JSON.parse(po.ordertime)
-					// po.requireddeliverydate = JSON.parse(po.requireddeliverydate)
-
-					// 构造子集
-					// for (let orderDetailListKey in this.orderDetailList) {
-					// 	orderDetailListKey.sid = this.m.sid;
-					// }
-					po.orderDetailList = [];
-					po.orderDetailList = this.orderDetailList;
-
-					console.log(JSON.stringify(po))
+				//先进行校验
+				let stock = {};
+				stock.stockname = this.OrderDetail.productname;
+				stock.stocknumber = this.OrderDetail.weight;
 
 
-					this.sa.ajaxPostJson('/saleOrder/add', JSON.stringify(po), function() {
-						self.sa.alert('增加成功', function() {
-							self.$parent.f5();	// 父视图刷新   
-							self.isShow = false;
-						}); 
-					});
-				} else {
-					// id != 0 为修改
-					let po = this.m;
-					this.sa.ajaxPost('/saleOrder/update', po, function(){
-						self.sa.alert('修改成功', function(){
-							self.$parent.f5();	// 父视图刷新
-							self.isShow = false;
+
+
+				this.sa.ajaxPostJson('/saleOrder/judge', JSON.stringify(stock), function(res) {
+					if (res.msg === 'MORE'){
+						self.sa.alert('添加物品超过库存额度', function() {
+							self.OrderDetail = null;
 						});
-					});
-				}
+					}else if (res.msg === 'NONE'){
+						self.sa.alert('添加物品库存没有', function() {
+							self.OrderDetail = null;
+						});
+					}else {
+						//提交到上层组件的list里 //
+						this.add();
+						this.isShow = false;
+					}
+				}.bind(this));
+
 			},
 			// 创建一个空的model 
 			create_m: function() {
 				return {
-					stockname: '',
-					stocknumber: 0,
-					stockprice: 0,
-					remark: ''
-
+					productname: '',
+					labelname: '',
+					simple: '',
+					compound: '',
+					packingspecification:'',
+					weight:0,
+					taxinclusiveprice:0,
+					totalmoney:0
 				}
 			},
-			upload(A){
-				this.orderDetailList.push(A);
-			}
-			// 遍历判断， 获取模拟数据  
-			// getMockData: function(id) {
-			// 	var data = null;
-			// 	// 遍历判断
-			// 	mockDataList.data.forEach(function(item) {
-			// 		if(item.id == id) {
-			// 			data = item;
-			// 		}
-			// 	})
-			// 	// 创建模拟数据
-			// 	var mockData = {
-			// 		code: 200,
-			// 		msg: 'ok',
-			// 		data: data
-			// 	}
-			// 	return mockData;
-			// }
+
 		},
 		created: function(){
-			
+
 		}
 	}
 </script>

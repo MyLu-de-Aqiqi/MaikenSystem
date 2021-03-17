@@ -1,5 +1,5 @@
-// const url = 'http://localhost:8764';   //公司-开发环境
-const url = 'http://106.14.247.150:8764';   //公司-开发环境
+const url = 'http://localhost:8764';   //公司-开发环境
+// const url = 'http://106.14.247.150:8764';   //公司-开发环境
 
 
 
@@ -9,7 +9,7 @@ module.exports = {
 		proxy:{
 			'/admin':{
 				// target:'http://localhost:8764/',
-				target:'http://106.14.247.150:8764/',
+				target: url,
 				ws: true,
 				changeOrigin:true,
 				pathRewrite: {

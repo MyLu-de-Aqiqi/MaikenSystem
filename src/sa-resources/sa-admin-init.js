@@ -20,14 +20,24 @@ export default function(sa_admin, sa) {
 	let cookie = this.sa.getCookie('satoken');
 
 	if (cookie.length > 0){
-		sa.ajaxGet('/admin/getMenuTree', function(res) {
+		this.sa.ajaxGet('/admin/tokenVerify',  function(res) {
+			if (res.msg == "OK"){
+				sa.ajaxGet('/admin/getMenuTree', function(res) {
 
-			let menuIds = res.data;
+					let menuIds = res.data;
 
-			sa_admin.initMenu(menuIds); // 初始化菜单, 不传参代表默认显示所有菜单 菜单在 ./sa-menu-list.js 里,
+					sa_admin.initMenu(menuIds); // 初始化菜单, 不传参代表默认显示所有菜单 菜单在 ./sa-menu-list.js 里,
 
 
+				}.bind(this))
+			}else if (res.msg == "FAIL"){
+				document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+				localStorage.removeItem('permission');
+				Vue.prototype.sa_admin.openLogin();
+			}
 		}.bind(this))
+
+
 	}else {
 		Vue.prototype.sa_admin.openLogin();
 	}

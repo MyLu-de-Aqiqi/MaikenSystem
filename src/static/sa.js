@@ -14,8 +14,8 @@ var sa = {
 (function(){
 	// 公司开发环境
 	var cfg_dev = {
-		// api_url: 'http://localhost:8080',	// 所有ajax请求接口父地址
-		api_url: 'http://106.14.247.150',	// 所有ajax请求接口父地址
+		api_url: 'http://localhost:8080',	// 所有ajax请求接口父地址
+		// api_url: 'http://106.14.247.150',	// 所有ajax请求接口父地址
 		web_url: 'http://www.baidu.com'		// 此项目前台地址 (此配置项非必须)
 	}
 	// 服务器测试环境
@@ -97,7 +97,7 @@ var sa = {
 			msg: '努力加载中...',	// 提示语
 			baseUrl: (url.indexOf('http') === 0 ? '' : sa.cfg.api_url),// 父url，拼接在url前面
 			sleep: 0,	// 休眠n毫秒处理回调函数 
-			type: 'post',	// 默认请求类型 
+			type: 'post',	// 默认请求类型
 			success200: success200,			// code=200, 代表成功 
 			success500: function(res){		// code=500, 代表失败 
 				return layer.alert('失败：' + res.msg);
@@ -143,6 +143,9 @@ var sa = {
 			crossDomain: true,
 			beforeSend: function(xhr) {
 				xhr.setRequestHeader('X-Requested-With','XMLHttpRequest');
+				if (localStorage.tokenName){
+					xhr.setRequestHeader(localStorage.tokenName,localStorage.tokenValue);
+				}
 			},
 			success: function(res){
 				setTimeout(function() {
@@ -227,6 +230,9 @@ var sa = {
 			crossDomain: true,
 			beforeSend: function(xhr) {
 				xhr.setRequestHeader('X-Requested-With','XMLHttpRequest');
+				if (localStorage.tokenName){
+					xhr.setRequestHeader(localStorage.tokenName,localStorage.tokenValue);
+				}
 			},
 			success: function(res){
 				setTimeout(function() {
@@ -312,6 +318,9 @@ var sa = {
 			crossDomain: true,
 			beforeSend: function(xhr) {
 				xhr.setRequestHeader('X-Requested-With','XMLHttpRequest');
+				if (localStorage.tokenName){
+					xhr.setRequestHeader(localStorage.tokenName,localStorage.tokenValue);
+				}
 			},
 			success: function(res){
 				setTimeout(function() {

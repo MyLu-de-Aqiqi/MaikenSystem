@@ -94,15 +94,21 @@
 		
 		<!-- 增改组件 -->
 		<add-or-update ref="add-or-update"></add-or-update>
-		
+		<add-order-show ref="add-order-show"></add-order-show>
+		<add-order-update ref="add-order-update"></add-order-update>
+
 	</div>
 </template>
 
 <script>
 	import addOrUpdate from './sale-order-list-add';
+	import addOrderShow from './sale-order-show';
+	import addOrderUpdate from './sale-order-update';
 	export default {
 		components: {
-			addOrUpdate
+			addOrUpdate,
+			addOrderShow,
+			addOrderUpdate
 		},
 		data() {
 			return {
@@ -125,35 +131,8 @@
 			},
 			// 查看
 			get: function(data) {
-				var str = '<div>';
-				// str += '<p>编号：' + data.pid + '</p>';
-				str += '<p>销售订单号：' + data.sid + '</p>';
-				str += '<p>客户名称：' + data.clientname + '</p>';
-				str += '<p>客户地址：' + data.clientaddress + '</p>';
-				str += '<p>客户所属行业：' + data.industryofthecustomer + '</p>';
-				str += '<p>客户地区：' + data.theclientarea + '</p>';
-				str += '<p>客户类型：' + data.theclienttype + '</p>';
-				str += '<p>流程单编号：' + data.sheetnumber + '</p>';
-				str += '<p>接单日期：' + data.ordertime + '</p>';
-				str += '<p>要求发货日期：' + data.requireddeliverydate + '</p>';
-				str += '<p>合同号：' + data.contrctnumber + '</p>';
-				str += '<p>联系人：' + data.contact + '</p>';
-				str += '<p>联系电话：' + data.phone + '</p>';
-				str += '<p>销售员：' + data.saleman + '</p>';
-				str += '<p>送货要求：' + data.deliveryrequirements + '</p>';
-				str += '<p>特殊要求：' + data.specialrequirements + '</p>';
-				str += '<p>付款方式：' + data.paytype + '</p>';
-				str += '<p>审核人：' + data.reviewer + '</p>';
-				str += '<p>批准人：' + data.approver + '</p>';
-				str += '<p>电话批准人：' + data.phoneapprover + '</p>';
-				str += '<p>应收款审核：' + data.receivablesaudit + '</p>';
-				str += '<p>客户付款类型：' + data.clientpaytype + '</p>';
-				str += '<p>已批准信用额度：' + data.thecreditlinehasbeenapproved + '</p>';
-				str += '<p>信用限额：' + data.creditterm + '</p>';
-				str += '<p>已经累计赊账贷款：' + data.thecumulativecredit + '</p>';
-				str += '<p>备注：' + data.remark + '</p>';
-				str += '</div>';
-				this.sa.alert(str);
+				this.$refs['add-order-show'].open(data);
+
 			},
 			// 添加
 			add: function () {
@@ -161,7 +140,7 @@
 			},
 			// 修改
 			update: function (data) {
-				this.$refs['add-or-update'].open(data.stockid);
+				this.$refs['add-order-update'].open(data);
 			},
 			// 删除
 			del: function (data) {
