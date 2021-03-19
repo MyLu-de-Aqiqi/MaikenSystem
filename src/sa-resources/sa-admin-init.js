@@ -17,7 +17,8 @@ export default function(sa_admin, sa) {
 
 
 	// ================================= 示例：初始化菜单  =================================
-	let cookie = this.sa.getCookie('satoken');
+	let cookie = localStorage.tokenValue;
+
 
 	if (cookie.length > 0){
 		this.sa.ajaxGet('/admin/tokenVerify',  function(res) {

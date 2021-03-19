@@ -55,6 +55,9 @@
 		<div style="position: absolute; bottom: 40px; width: 100%; text-align: center; color: #666;">
 			Copyright ©2020  | 彭成轩 - 提供技术支持
 		</div>
+		<div style="position: absolute; bottom: 20px; width: 100%; text-align: center; color: #666;">
+			网站备案号 蜀ICP备2021005937号-1
+		</div>
 	</div>
 </template>
 
@@ -77,7 +80,8 @@
 		created: function () {
 			//有token，去后端校验这个token是否能验证通过
 			//看cookie是否有，如果有cookie，就去校验，没有就不去校验了
-			let cookie = this.sa.getCookie('satoken');
+			let cookie = localStorage.tokenValue;
+
 
 			if (cookie.length > 0){
 				this.sa.ajaxGet('/admin/tokenVerify',  function(res) {
