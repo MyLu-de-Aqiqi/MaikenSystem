@@ -72,6 +72,11 @@
 <!--				</el-table-column>-->
 				<el-table-column label="正常按钮" width="240px">
 					<template slot-scope="s">
+						<el-button class="c-btn" type="warning" v-if="s.row.state == 0" icon="el-icon-check" @click="confirm(s.row.sid)">未发货</el-button>
+						<el-button class="c-btn" type="warning" v-else-if="s.row.state == 1"  icon="el-icon-check" @click="confirm(s.row.sid)">物流中</el-button>
+						<el-button class="c-btn" type="warning" disabled v-else-if="s.row.state == 2"  icon="el-icon-check" @click="confirm(s.row.sid)">已送达</el-button>
+
+
 						<el-button class="c-btn" type="success"  icon="el-icon-view" @click="get(s.row)">查看</el-button>
 						<el-button class="c-btn" type="primary" icon="el-icon-edit" @click="update(s.row)">修改</el-button>
 <!--						<el-button class="c-btn" type="danger" icon="el-icon-delete" @click="del(s.row)">删除</el-button>-->
@@ -119,6 +124,7 @@
 				},
 				total: 0,
 				dataList: [],		// 数据集合
+				purchase:{},
 			}
 		},
 		methods: {
@@ -133,6 +139,37 @@
 			get: function(data) {
 				this.$refs['add-order-show'].open(data);
 
+			},
+			confirm(sid){
+				console.log("sid:"+sid)
+				//getById
+				this.sa.ajaxGet('/saleOrder/getById?pid=' + sid, function(res) {
+					this.purchase = res.data;
+
+
+					if (this.purchase.state == 0){
+						this.sa.confirm('确定到物流中吗?', function() {
+							this.sa.ajaxGet('/saleOrder/confirm?sid=' + sid, function() {
+								this.f5();
+							}.bind(this))
+						}.bind(this));
+					}else if (this.purchase.state == 1){
+						this.sa.confirm('确定已送达吗?', function() {
+							this.sa.ajaxGet('/saleOrder/confirm?sid=' + sid, function() {
+								this.f5();
+							}.bind(this))
+						}.bind(this));
+					}
+
+
+				}.bind(this))
+
+
+				// this.sa.confirm('确定到货吗?', function() {
+				// 	this.sa.ajaxGet('/saleOrder/confirm?sid=' + sid, function() {
+				// 		this.f5();
+				// 	}.bind(this))
+				// }.bind(this));
 			},
 			// 添加
 			add: function () {

@@ -28,7 +28,7 @@ export default [
 	{
 		id: '1',
 		name: '进货管理模块',
-		icon: 'el-icon-search',
+		icon: 'el-icon-shopping-cart-full',
 		info: '进货管理模块',
 		childList: [
 			{id: '2', name: '进货管理', view: () => import('@/sa-view/purchase/purchase-list.vue')},
@@ -38,7 +38,7 @@ export default [
 	{
 		id: '25',
 		name: '财务管理',
-		icon: 'el-icon-search',
+		icon: 'el-icon-coin',
 		info: '财务管理',
 		childList: [
 			{id: '26', name: '账目管理', view: () => import('@/sa-view/financial/financial-list.vue')}
@@ -47,7 +47,7 @@ export default [
 	{
 		id: '3',
 		name: '销售订单管理',
-		icon: 'el-icon-search',
+		icon: 'el-icon-goods',
 		info: '销售订单管理',
 		childList: [
 			{id: '4', name: '销售订单查看', view: () => import('@/sa-view/saleorder/sale-order-list.vue')}

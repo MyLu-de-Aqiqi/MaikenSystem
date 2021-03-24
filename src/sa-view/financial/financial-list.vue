@@ -7,15 +7,15 @@
 	.s-row-2 .el-card .el-card__body{height: 250px;}
 	.s-row-3 .el-card{/* height: 100%; */}
 	/* 绗竴琛� */
-	.sa-wnk{background-color: #FFF; border: 1px #ddd solid; margin-bottom: 14px; min-height: 100px;
+	.sa-wnk{background-color: #FFF; border: 1px #ddd solid; margin-bottom: 14px; min-height: 100px;width: 300px;
 		cursor: pointer; transition: all 0.3s; overflow: hidden;}
 	.sa-wnk:hover{box-shadow: 0 0 20px #999;}
-	.sa-wnk img{float: left; line-height: 100px; margin: 25px 0px 0 20px; width: 50px; height: 50px; vertical-align: middle;}
+	.sa-wnk img{float: left; line-height: 80px; margin: 25px 0px 0 20px; width: 50px; height: 50px; vertical-align: middle;}
 	.sa-wnk .sa-wnk-tv{float: left; margin-left: 10px; max-width: calc(100% - 100px);}
 	.sa-wnk-title{margin-top: 25px; font-size: 16px;}
 	.sa-wnk-value{margin-top: 4px; font-size: 24px; padding-bottom: 20px;}
 	/* 绗簩琛� */
-	.echarts-div{height: 100%;}
+	.echarts-div{height: 80%;}
 	/* 绗笁琛� */
 	.s-row-3 .btn-box{margin-bottom: 4px; }
 	.s-row-3 .btn-box .el-button{margin-bottom: 10px; }
@@ -28,7 +28,7 @@
 <template>
 	<div class="vue-box">
 		<div class="c-panel">
-			<link rel="stylesheet" href="https://unpkg.com/element-ui@2.13.0/lib/theme-chalk/index.css">
+<!--			<link rel="stylesheet" href="https://unpkg.com/element-ui@2.13.0/lib/theme-chalk/index.css">-->
 
 			<!-- 第一栏 -->
 			<div class="s-row s-row-1">

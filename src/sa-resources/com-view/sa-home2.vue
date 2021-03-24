@@ -21,7 +21,7 @@
 
 
 	.box1{
-		background:url(./shengwugongcheng2.jpeg) no-repeat 100px center
+		background:url(./demoTree.jpg) no-repeat 0px center
 	}
 
 </style>

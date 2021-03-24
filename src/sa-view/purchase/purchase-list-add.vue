@@ -5,7 +5,7 @@
 <template>
 	<el-dialog
 		v-if="m"
-		:title="m.id == 0 ? '数据增加' : '数据修改'"
+		:title="id == 0 ? '新增进货' : '进货修改'"
 		:visible.sync="isShow"
 		width="400px"
 		top="5vh"
@@ -32,25 +32,25 @@
 						<el-input v-model="m.typename"></el-input>
 					</el-form-item>
 					<el-form-item label="进货数量：">
-						<el-input v-model="m.count"></el-input>
+						<el-input v-model="m.count" type="number"></el-input>
 					</el-form-item>
 					<el-form-item label="进货单价：">
-						<el-input v-model="m.unitprice"></el-input>
+						<el-input v-model="m.unitprice" @change="getTotal()" type="number"></el-input>
 					</el-form-item>
 					<el-form-item label="进货总金额：">
-						<el-input v-model="m.totalmoney"></el-input>
+						<el-input v-model="m.totalmoney" @change="getTotal()" disabled type="number"></el-input>
 					</el-form-item>
 					<el-form-item label="付款日期：">
 						<el-input v-model="m.paytime" type="date"></el-input>
 					</el-form-item>
 					<el-form-item label="付款金额：">
-						<el-input v-model="m.paymoney"></el-input>
+						<el-input v-model="m.paymoney" type="number"></el-input>
 					</el-form-item>
 					<el-form-item label="发票状态：">
 						<el-input v-model="m.invoicestate"></el-input>
 					</el-form-item>
 					<el-form-item label="发票金额：">
-						<el-input v-model="m.invoicemoney"></el-input>
+						<el-input v-model="m.invoicemoney" type="number"></el-input>
 					</el-form-item>
 					<el-form-item label="发票号：">
 						<el-input v-model="m.invocenumber"></el-input>
@@ -123,6 +123,9 @@
 				this.isShow = false;
 				// this.m = null;
 			},
+			getTotal(){
+				this.m.totalmoney = this.m.count * this.m.unitprice;
+			},
 			// 提交 
 			ok: function() {
 				// 表单验证 
@@ -161,11 +164,11 @@
 					typename: '',
 					count: 0,
 					unitprice: 0,
-					totalmoney:'',
+					totalmoney:0,
 					paytime:'',
-					paymoney:'',
+					paymoney:0,
 					invoicestate:'',
-					invoicemoney:'',
+					invoicemoney:0,
 					invocenumber:'',
 					invocetime:'',
 					remaks:''

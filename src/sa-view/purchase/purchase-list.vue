@@ -80,6 +80,9 @@
 <!--				</el-table-column>-->
 				<el-table-column label="正常按钮" width="240px">
 					<template slot-scope="s">
+						<el-button class="c-btn" type="warning" v-if="s.row.state == 0" icon="el-icon-check" @click="confirm(s.row.pid)">{{s.row.state == 0 ? '确认到货' : '已经到货'}}</el-button>
+						<el-button class="c-btn" type="warning" disabled v-else icon="el-icon-check" @click="confirm(s.row.pid)">{{s.row.state == 0 ? '确认到货' : '已经到货'}}</el-button>
+
 						<el-button class="c-btn" type="success"  icon="el-icon-view" @click="get(s.row)">查看</el-button>
 						<el-button class="c-btn" type="primary" icon="el-icon-edit" @click="update(s.row)">修改</el-button>
 <!--						<el-button class="c-btn" type="danger" icon="el-icon-delete" @click="del(s.row)">删除</el-button>-->
@@ -154,6 +157,13 @@
 			// 添加
 			add: function () {
 				this.$refs['add-or-update'].open(0);
+			},
+			confirm(pid){
+				this.sa.confirm('确定到货吗?', function() {
+					this.sa.ajaxGet('/purchase/confirm?pid=' + pid, function() {
+							this.f5();
+					}.bind(this))
+				}.bind(this));
 			},
 			// 修改
 			update: function (data) {

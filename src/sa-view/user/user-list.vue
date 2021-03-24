@@ -5,12 +5,12 @@
 			<div class="c-title">用户列表</div>
 			<el-form :inline="true" size="mini">
 				<el-form-item label="用户昵称：">
-					<el-input v-model="p.username" placeholder="模糊查询"></el-input>
+					<el-input v-model="p.keyword" placeholder="模糊查询"></el-input>
 				</el-form-item>
-				<el-form-item label="注册日期：">
-					<el-date-picker v-model="p.start_time" type="date" value-format="yyyy-MM-dd" placeholder="开始日期"></el-date-picker> - 
-					<el-date-picker v-model="p.end_time" type="date" value-format="yyyy-MM-dd" placeholder="结束日期"></el-date-picker>
-				</el-form-item>
+<!--				<el-form-item label="注册日期：">-->
+<!--					<el-date-picker v-model="p.start_time" type="date" value-format="yyyy-MM-dd" placeholder="开始日期"></el-date-picker> - -->
+<!--					<el-date-picker v-model="p.end_time" type="date" value-format="yyyy-MM-dd" placeholder="结束日期"></el-date-picker>-->
+<!--				</el-form-item>-->
 				<el-form-item style="min-width: 0px;">
 					<el-button type="primary" icon="el-icon-search" @click="p.current = 1; f5()">查询</el-button>
 				</el-form-item>
@@ -21,20 +21,20 @@
 
 
 				<br />
-				<el-form-item label="综合排序：" class="s-radio-text">
-					<el-radio-group v-model="p.sort_type">
-						<el-radio :label="1">注册时间</el-radio>
-						<el-radio :label="2">最近登录</el-radio>
-						<el-radio :label="3">登陆次数</el-radio>
-						<el-radio :label="4">最近签到</el-radio>
-						<el-radio :label="5">签到次数</el-radio>
-					</el-radio-group>
-				</el-form-item>
+<!--				<el-form-item label="综合排序：" class="s-radio-text">-->
+<!--					<el-radio-group v-model="p.sort_type">-->
+<!--						<el-radio :label="1">注册时间</el-radio>-->
+<!--						<el-radio :label="2">最近登录</el-radio>-->
+<!--						<el-radio :label="3">登陆次数</el-radio>-->
+<!--						<el-radio :label="4">最近签到</el-radio>-->
+<!--						<el-radio :label="5">签到次数</el-radio>-->
+<!--					</el-radio-group>-->
+<!--				</el-form-item>-->
 			</el-form>
 			<!-- <div class="c-title">数据列表</div> -->
 			<el-table :data="dataList" size="mini">
 				<el-table-column label="编号" prop="id" width="70px" > </el-table-column>
-				<el-table-column label="账号" prop="name" width="200px">
+				<el-table-column label="账号" prop="name" width="70px">
 					<template slot-scope="s">
 <!--						<img :src="s.row.avatar" @click="sa.showImage(s.row.avatar, '400px', '400px')"-->
 <!--							style="width: 3em; height: 3em; float: left; margin-right: 1em; border-radius: 50%; cursor: pointer;" >-->
@@ -58,15 +58,27 @@
 				<el-table-column label=联系电话 prop="phone"></el-table-column>
 				<el-table-column label="状态">
 					<template slot-scope="s">
-						<el-switch v-model="s.row.status" :active-value="1" :inactive-value="2" inactive-color="#ff4949"></el-switch>
+						<el-switch @change="changeSwitch($event,s.row,s.$index)" v-model="s.row.status" :active-value="1" :inactive-value="2" inactive-color="#ff4949"></el-switch>
 						<b style="color: green; margin-left: 10px;" v-if="s.row.status == 1">正常</b>
 						<b style="color: red; margin-left: 10px;" v-if="s.row.status == 2">禁用</b>
 					</template>
 				</el-table-column>
+				<el-table-column prop="address" label="密码操作">
+					<template slot-scope="s">
+<!--						<el-button class="c-btn" type="success"  icon="el-icon-view" @click="get(s.row)">详情</el-button>-->
+<!--						<el-button class="c-btn" type="primary" icon="el-icon-edit" @click="update(s.row)">修改</el-button>-->
+						<!--						<el-button class="c-btn" type="primary" icon="el-icon-edit" @click="userUnlock(s.row)">解除锁定</el-button>-->
+						<el-button class="c-btn" type="primary" icon="el-icon-edit" @click="passwordReset(s.row)">密码重置</el-button>
+<!--						<el-button class="c-btn" type="danger" icon="el-icon-delete" @click="del(s.row)">删除</el-button>-->
+					</template>
+				</el-table-column>
+
 				<el-table-column prop="address" label="操作">
 					<template slot-scope="s">
 						<el-button class="c-btn" type="success"  icon="el-icon-view" @click="get(s.row)">详情</el-button>
 						<el-button class="c-btn" type="primary" icon="el-icon-edit" @click="update(s.row)">修改</el-button>
+<!--						<el-button class="c-btn" type="primary" icon="el-icon-edit" @click="userUnlock(s.row)">解除锁定</el-button>-->
+<!--						<el-button class="c-btn" type="primary" icon="el-icon-edit" @click="passwordReset(s.row)">密码重置</el-button>-->
 						<el-button class="c-btn" type="danger" icon="el-icon-delete" @click="del(s.row)">删除</el-button>
 					</template>
 				</el-table-column>
@@ -143,6 +155,12 @@
 			add(){
 				this.$refs['user-add'].open();
 			},
+			changeSwitch(data,row,index){
+				console.log(index)
+				this.sa.ajaxGet('/user/updateState?id=' + row.id, function() {
+					// this.f5();
+				}.bind(this))
+			},
 			// 删除
 			del: function(data) {
 				this.sa.confirm('是否删除，此操作不可撤销', function() {
@@ -173,6 +191,25 @@
 			update: function(data) {
 				this.$refs['user-edit'].open(data);
 			},
+			userUnlock(row){
+				this.sa.confirm('是否解除锁定?', function() {
+
+					this.sa.ajaxGet('/admin/userUnlock?id=' + row.id, function() {
+						this.sa.ok('解除锁定成功');
+					}.bind(this))
+
+				}.bind(this));
+			},
+			passwordReset(row){
+				this.sa.confirm('是否密码重置?', function() {
+
+					this.sa.ajaxGet('/admin/passwordReset?id=' + row.id, function() {
+						this.f5();
+						this.sa.ok('密码重置成功');
+					}.bind(this))
+
+				}.bind(this));
+			}
 		},
 
 		created: function(){
