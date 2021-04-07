@@ -1,5 +1,5 @@
-const url = 'http://localhost:8764';   //公司-开发环境
-// const url = 'https://www.mimkenc.cn:8764';   //公司-开发环境
+// const url = 'http://localhost:8764';   //公司-开发环境
+const url = 'https://www.mimkenc.cn';   //公司-开发环境
 
 
 

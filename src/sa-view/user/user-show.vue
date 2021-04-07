@@ -37,6 +37,9 @@
 					<el-form-item label="电话：">
 						<el-input v-model="userInfo.phone" disabled></el-input>
 					</el-form-item>
+					<el-form-item label="微信openId：">
+						<el-input v-model="userInfo.openId" disabled></el-input>
+					</el-form-item>
 
 					<el-table style="margin-top: 10px" :data="roleList" size="mini">
 						<el-table-column label="角色名" prop="roleName"></el-table-column>

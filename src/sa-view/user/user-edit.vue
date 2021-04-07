@@ -37,6 +37,9 @@
 					<el-form-item label="电话：">
 						<el-input v-model="userInfo.phone" ></el-input>
 					</el-form-item>
+					<el-form-item label="微信openId：">
+						<el-input v-model="userInfo.openId" ></el-input>
+					</el-form-item>
 
 					<el-select v-model="value" placeholder="请选择">
 						<el-option

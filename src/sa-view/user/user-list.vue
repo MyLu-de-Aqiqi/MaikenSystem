@@ -53,17 +53,17 @@
 <!--				<el-table-column label="性别" prop="sex"> </el-table-column>-->
 <!--				<el-table-column label="注册方式" prop="create_type"></el-table-column>-->
 <!--				<el-table-column label="注册于" prop="createTime"></el-table-column>-->
-				<el-table-column label="上次登陆IP" prop="loginIp"></el-table-column>
-				<el-table-column label="上次登陆时间" prop="loginTime"></el-table-column>
-				<el-table-column label=联系电话 prop="phone"></el-table-column>
-				<el-table-column label="状态">
+				<el-table-column label="上次登陆IP" prop="loginIp" width="240px"></el-table-column>
+				<el-table-column label="上次登陆时间" prop="loginTime" width="200px"></el-table-column>
+				<el-table-column label=联系电话 prop="phone" width="140px"></el-table-column>
+				<el-table-column label="状态" width="140px">
 					<template slot-scope="s">
 						<el-switch @change="changeSwitch($event,s.row,s.$index)" v-model="s.row.status" :active-value="1" :inactive-value="2" inactive-color="#ff4949"></el-switch>
 						<b style="color: green; margin-left: 10px;" v-if="s.row.status == 1">正常</b>
 						<b style="color: red; margin-left: 10px;" v-if="s.row.status == 2">禁用</b>
 					</template>
 				</el-table-column>
-				<el-table-column prop="address" label="密码操作">
+				<el-table-column prop="address" label="密码操作" width="160px">
 					<template slot-scope="s">
 <!--						<el-button class="c-btn" type="success"  icon="el-icon-view" @click="get(s.row)">详情</el-button>-->
 <!--						<el-button class="c-btn" type="primary" icon="el-icon-edit" @click="update(s.row)">修改</el-button>-->
@@ -77,6 +77,7 @@
 					<template slot-scope="s">
 						<el-button class="c-btn" type="success"  icon="el-icon-view" @click="get(s.row)">详情</el-button>
 						<el-button class="c-btn" type="primary" icon="el-icon-edit" @click="update(s.row)">修改</el-button>
+<!--						<el-button class="c-btn" type="primary" icon="el-icon-edit" @click="bindWx(s.row)">绑定微信</el-button>-->
 <!--						<el-button class="c-btn" type="primary" icon="el-icon-edit" @click="userUnlock(s.row)">解除锁定</el-button>-->
 <!--						<el-button class="c-btn" type="primary" icon="el-icon-edit" @click="passwordReset(s.row)">密码重置</el-button>-->
 						<el-button class="c-btn" type="danger" icon="el-icon-delete" @click="del(s.row)">删除</el-button>
@@ -141,7 +142,8 @@
 					keyword:'',
 				},
 				dataCount: 0,
-				dataList: []
+				dataList: [],
+				openId:''
 			}
 		},
 		methods: {
@@ -155,6 +157,12 @@
 			add(){
 				this.$refs['user-add'].open();
 			},
+			// bindWx(row){
+			// 	console.log(JSON.stringify(row))
+			// 	this.sa.ajaxGet('/user/setOpenId?id=' + row.id + '&openId=' + this.openId, function() {
+			// 		// this.f5();
+			// 	}.bind(this))
+			// },
 			changeSwitch(data,row,index){
 				console.log(index)
 				this.sa.ajaxGet('/user/updateState?id=' + row.id, function() {
