@@ -1,12 +1,13 @@
 import Vue from 'vue';
-import saMenuList from './../sa-menu-list.js';	// 菜单集合
-import sa_admin_code_util from './admin-util.js';	// admin代码util
-import { swiper, swiperSlide } from 'vue-awesome-swiper';	// 组件 swiper
-import saLogin from './../com-view/sa-login.vue';	// 组件 login
-import sa403 from './../com-view/sa-403.vue';	// 组件 403
-import sa404 from './../com-view/sa-404.vue';	// 组件 404
-import sa500 from './../com-view/sa-500.vue';	// 组件 500
+import saMenuList from './../sa-menu-list.js'; // 菜单集合
+import sa_admin_code_util from './admin-util.js'; // admin代码util
+import {swiper, swiperSlide} from 'vue-awesome-swiper'; // 组件 swiper
+import saLogin from './../com-view/sa-login.vue'; // 组件 login
+import sa403 from './../com-view/sa-403.vue'; // 组件 403
+import sa404 from './../com-view/sa-404.vue'; // 组件 404
+import sa500 from './../com-view/sa-500.vue'; // 组件 500
 import UserEditPw from '../../sa-view/user/user-edit-pw';
+// import fa from "element-ui/src/locale/lang/fa";
 
 
 // sa_admin对象 
@@ -146,20 +147,73 @@ export default {
 		// ------------------- 对外预留接口 --------------------
 		// show_list 为指定显示的id集合(注意是id的集合)，为空时代表显示所有
 		initMenu: function(show_list) {
+			//调用异步接口，得到整个menuList
+			// this.buildMenuList(res=>{
+			//
+			// 	if (res.code === 200){
+			// 		console.log("结束！!!!")
+			// 		// this.setMenuList(this.res.data, show_list);
+			// 		this.menuList  = res.data;
+			// 	}else {
+			// 		this.setMenuList(saMenuList, show_list);
+			// 	}
+			// });
+
 			this.setMenuList(saMenuList, show_list);
+
 		},
 		// 写入菜单，可以是一个一维数组(指定好parent_id)，也可以是一个已经渲染好的tree数组	
 		// show_list 为指定显示的id集合(注意是id的集合)，为空时代表显示所有	
 		setMenuList: function(menu_list, show_list) {
+
 			// 转化为string 便于比较
 			if(show_list) {
 				for (var i = 0; i < show_list.length; i++) {
 					show_list[i] = show_list[i] + '';
 				} 
 			}
-			menu_list = this.arrayToTree(menu_list);
-			menu_list = this.refMenuList(menu_list, show_list);
+			// menu_list = this.arrayToTree(menu_list);
+			// menu_list = this.refMenuList(menu_list, show_list);
 			this.menuList = menu_list;
+		},
+		buildMenuList(callback){
+			this.sa.ajaxGet('/admin/getAllMenuTree',  function(res) {
+				if (res.code === 200){
+					this.res = res;
+					this.getRecursiveMenuTree(res.data);
+
+					if (callback){
+						callback(res);
+					}
+				}else {
+					callback(res);
+				}
+			}.bind(this))
+		},
+		getRecursiveMenuTree(parentMenu){
+			//of拿元素，in拿下标
+			for (let item of parentMenu){
+				console.log("item.childList:"+JSON.stringify(item.childList))
+
+				if (item.url){
+					//入 -- @/sa-view/purchase/purchase-list.vue -- ../../sa-view/purchase/purchase-list.vue
+					// let page = require(item.url);
+					// item.view = require([item.url]);
+					item = {
+						id: item.id,
+						name: item.name,
+						view: () => import(item.url),
+						childList: item.childList
+					}
+				}
+
+				//如果子集不用空
+				if (item.childList.length > 0){
+					this.getRecursiveMenuTree(item.childList);
+					console.log("递归打印:"+JSON.stringify(parentMenu))
+
+				}
+			}
 		},
 		// 将一维平面数组转换为 Tree 菜单 (根据其指定的parent_id添加到其父菜单的childList)
 		arrayToTree: function(menu_list) {
@@ -182,7 +236,7 @@ export default {
 		refMenuList: function(menu_list, show_list, parent_id) {
 			for (var i = 0; i < menu_list.length; i++) {
 				var menu = menu_list[i];
-				menu.is_show = (menu.is_show === false ? false : true);
+				menu.checked = (menu.checked === false ? false : true);
 				menu.parent_id = menu.parent_id || parent_id || 0;
 				// 隐藏的给去掉 
 				// if(menu.is_show === false) {
@@ -191,12 +245,12 @@ export default {
 				// 	continue;
 				// }
 				// 如果指定了 show_list，并且 menu.id 不在 show_list 里，划掉
-				if(show_list && show_list.indexOf(menu.id) == -1) {
-					// sa_admin_code_util.arrayDelete(menu_list, menu);
-					// i--;
-					// continue;
-					menu.is_show = false;
-				}
+				// if(show_list && show_list.indexOf(menu.id) == -1) {
+				// 	// sa_admin_code_util.arrayDelete(menu_list, menu);
+				// 	// i--;
+				// 	// continue;
+				// 	menu.is_show = false;
+				// }
 				// 有子项的递归处理 
 				if(menu.childList && menu.childList.length > 0){
 					this.refMenuList(menu.childList, show_list, menu.id);	// 递归处理 
@@ -477,8 +531,9 @@ export default {
 		selectMenu: function(index) {
 			var menu = this.getMenuById(this.menuList, index);
 			if(menu != null) {
-				// 如果是click函数 
+				// 如果是click函数
 				if(menu.click) {
+					console.log("调用click事件")
 					return menu.click(this, this.sa);
 				}
 				// 如果是外部链接

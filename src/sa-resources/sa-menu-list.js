@@ -30,9 +30,10 @@ export default [
 		name: '进货管理模块',
 		icon: 'el-icon-shopping-cart-full',
 		info: '进货管理模块',
+		checked: true,
 		childList: [
-			{id: '2', name: '进货管理', view: () => import('@/sa-view/purchase/purchase-list.vue')},
-			{id: '12', name: '库存管理', view: () => import('@/sa-view/stock/stock-list.vue')}
+			{id: '2', name: '进货管理',checked: true, view: () => import('@/sa-view/purchase/purchase-list.vue')},
+			{id: '12', name: '库存管理',checked: true, view: () => import('@/sa-view/stock/stock-list.vue')}
 		]
 	},
 	{
@@ -40,8 +41,9 @@ export default [
 		name: '财务管理',
 		icon: 'el-icon-coin',
 		info: '财务管理',
+		checked: true,
 		childList: [
-			{id: '26', name: '账目管理', view: () => import('@/sa-view/financial/financial-list.vue')}
+			{id: '26', name: '账目管理',checked: true, view: () => import('@/sa-view/financial/financial-list.vue')}
 		]
 	},
 	{
@@ -49,8 +51,9 @@ export default [
 		name: '销售订单管理',
 		icon: 'el-icon-goods',
 		info: '销售订单管理',
+		checked: true,
 		childList: [
-			{id: '4', name: '销售订单查看', view: () => import('@/sa-view/saleorder/sale-order-list.vue')}
+			{id: '4', name: '销售订单查看',checked: true, view: () => import('@/sa-view/saleorder/sale-order-list.vue')}
 		]
 	},
 	// {
@@ -78,8 +81,9 @@ export default [
 		name: '权限控制',
 		icon: 'el-icon-unlock',
 		info: '对系统角色权限的分配等设计，敏感度较高，请谨慎授权',
+		checked: true,
 		childList: [
-			{id: '20', name: '角色列表', view: () => import('@/sa-view/role/role-list.vue') },
+			{id: '20', name: '角色列表',checked: true, view: () => import('@/sa-view/role/role-list.vue') },
 			// {id: '21', name: '菜单预览', view: () => import('@/sa-view/role/menu-list.vue') }
 		]
 	},
@@ -88,8 +92,9 @@ export default [
 		name: '用户管理',
 		icon: 'el-icon-user',
 		info: '对用户列表、添加、统计等等...',
+		checked: true,
 		childList: [
-			{id: '23', name: '用户列表', view: () => import('@/sa-view/user/user-list.vue')  },
+			{id: '23', name: '用户列表',checked: true, view: () => import('@/sa-view/user/user-list.vue')  },
 			// {id: '24', name: '用户添加', view: () => import('@/sa-view/user/user-add.vue'), params: {username: '王铁汉'} },
 		],
 		

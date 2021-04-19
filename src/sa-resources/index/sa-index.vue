@@ -24,12 +24,12 @@
 								:default-openeds="default_openeds" :collapse="is_fold" @select="selectMenu">
 								<div v-for="(menu, index) in menuList" :key="index">
 									<!-- 1 子菜单 -->
-									<el-menu-item v-if="!menu.childList && menu.is_show" :index="menu.id + '' ">
+									<el-menu-item v-if="!menu.childList && menu.checked" :index="menu.id + '' ">
 										<i :class="menu.icon" :title="menu.name"></i>
 										<span class="menu-name">{{menu.name}}</span>
 									</el-menu-item>
 									<!-- 1 父菜单 -->
-									<el-submenu v-if="menu.childList && menu.is_show" :index="menu.id + '' ">
+									<el-submenu v-if="menu.childList && menu.checked" :index="menu.id + '' ">
 										<template slot="title">
 											<i :class="menu.icon" :title="menu.name"></i>
 											<span class="menu-name">{{menu.name}}</span>
@@ -37,16 +37,16 @@
 										<!-- 遍历其子项 -->
 										<div v-for="(menu2, index) in menu.childList" :key="index">
 											<!-- 2 如果是子菜单 -->
-											<el-menu-item v-if="!menu2.childList && menu2.is_show" :index="menu2.id + '' ">
+											<el-menu-item v-if="!menu2.childList && menu2.checked" :index="menu2.id + '' ">
 												{{menu2.name}}
 											</el-menu-item>
 											<!-- 2 如果是父菜单 -->
-											<el-submenu v-if="menu2.childList && menu2.is_show" :index="menu2.id + '' ">
+											<el-submenu v-if="menu2.childList && menu2.checked" :index="menu2.id + '' ">
 												<template slot="title">
 													{{menu2.name}}
 												</template>
 												<div v-for="(menu3, index3) in menu2.childList" :key="index3">
-													<el-menu-item v-if="menu3.is_show" :index="menu3.id + '' ">
+													<el-menu-item v-if="menu3.checked" :index="menu3.id + '' ">
 														{{menu3.name}}
 													</el-menu-item>
 												</div>

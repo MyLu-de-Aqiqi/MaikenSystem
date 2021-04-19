@@ -17,8 +17,8 @@
 				:default-expand-all="true"
 				>
 				<span class="custom-tree-node" slot-scope="s">
-					<span style="color: #2D8CF0;" v-if="s.data.is_show == undefined || s.data.is_show == true">{{ s.data.name }}</span>
-					<span style="color: #999;" v-if="s.data.is_show == false">{{ s.data.name }} (隐藏)</span>
+					<span style="color: #2D8CF0;" v-if="s.data.checked == undefined || s.data.checked == true">{{ s.data.name }}</span>
+					<span style="color: #999;" v-if="s.data.checked == false">{{ s.data.name }} (隐藏)</span>
 					<span style="color: #999;" v-if="s.data.info">&emsp;———— {{s.data.info}} </span>
 				</span>
 			</el-tree>
